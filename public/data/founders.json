@@ -1,0 +1,158 @@
+[
+  {
+    "company": "Altlayer",
+    "founder": "YQ Jia",
+    "handle": "yq_acc",
+    "notes": "Founder and CEO"
+  },
+  {
+    "company": "aPriori",
+    "founder": ["Ray", "Olivia"],
+    "handle": ["sing_me_a", "0xolivia_"],
+    "notes": "Multiple founders"
+  },
+  {
+    "company": "Berachain",
+    "founder": "Smoky",
+    "handle": "SmokeyTheBera",
+    "notes": "Co-founder: itsdevbear"
+  },
+  {
+    "company": "Blast",
+    "founder": "Pacman",
+    "handle": "PacmanBlur",
+    "notes": ""
+  },
+  {
+    "company": "BounceBit",
+    "founder": "Jack",
+    "handle": "Jackventure",
+    "notes": ""
+  },
+  {
+    "company": "Chaoslabs",
+    "founder": "Omer Goldberg",
+    "handle": "omeragoldberg",
+    "notes": ""
+  },
+  {
+    "company": "Codex",
+    "founder": "Haonan Li",
+    "handle": "haonan",
+    "notes": ""
+  },
+  {
+    "company": "Cycles Money",
+    "founder": "Ethan Buchman",
+    "handle": "buchmanster",
+    "notes": ""
+  },
+  {
+    "company": "Drift",
+    "founder": "Cindy Leow",
+    "handle": "cindyleowtt",
+    "notes": ""
+  },
+  {
+    "company": "Ethena",
+    "founder": "Guy Young",
+    "handle": "gdog97_",
+    "notes": ""
+  },
+  {
+    "company": "IRYS",
+    "founder": "Josh Horne",
+    "handle": "josh_benaron",
+    "notes": ""
+  },
+  {
+    "company": "Kaito",
+    "founder": "Yu Hu",
+    "handle": "Punk9277",
+    "notes": ""
+  },
+  {
+    "company": "Monad",
+    "founder": "Keone Hon",
+    "handle": "keoneHD",
+    "notes": ""
+  },
+  {
+    "company": "Movement",
+    "founder": "Cooper Scanlon",
+    "handle": "coopsmoves",
+    "notes": "Co-founder Rushi Manche was removed from Movement in April 2025 over undisclosed token sales and governance failures."
+  },
+  {
+    "company": "Nansen",
+    "founder": "Alex Svanevik",
+    "handle": "ASvanevik",
+    "notes": ""
+  },
+  {
+    "company": "Openmind",
+    "founder": "Jan",
+    "handle": "JanLiphardt",
+    "notes": ""
+  },
+  {
+    "company": "Opinion Lab",
+    "founder": "Forrest Liu",
+    "handle": "ForrestOLAB",
+    "notes": ""
+  },
+  {
+    "company": "Orderly",
+    "founder": "Ran Yi",
+    "handle": "ranyi1115",
+    "notes": ""
+  },
+  {
+    "company": "Parti Network",
+    "founder": "Pengyu",
+    "handle": "0xpengyu",
+    "notes": ""
+  },
+  {
+    "company": "Pascal",
+    "founder": "(stealth — skip if no public profile)",
+    "handle": "",
+    "notes": ""
+  },
+  {
+    "company": "Pendle",
+    "founder": "TN Lee",
+    "handle": "tn_pendle",
+    "notes": ""
+  },
+  {
+    "company": "SAPIEN",
+    "founder": "Rowan Marrs",
+    "handle": "RowanRK6",
+    "notes": ""
+  },
+  {
+    "company": "Sentient",
+    "founder": "Himanshu Tyagi",
+    "handle": "hstyagi",
+    "notes": ""
+  },
+  {
+    "company": "Starkware",
+    "founder": "Uri Kolodny",
+    "handle": "ukolodny",
+    "notes": ""
+  },
+  {
+    "company": "Tenbin",
+    "founder": "Yuki",
+    "handle": "ballsyalchemist",
+    "notes": ""
+  },
+  {
+    "company": "Virtuals",
+    "founder": "Jansen Teng",
+    "handle": "",
+    "notes": ""
+  }
+]
