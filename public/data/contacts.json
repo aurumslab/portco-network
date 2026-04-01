@@ -120,18 +120,6 @@
     "status": "Active"
   },
   {
-    "source_founder": "Keone Hon",
-    "source_company": "Monad",
-    "contact_name": "Eunice Giarta",
-    "x_handle": "0x_eunice",
-    "x_url": "https://x.com/0x_eunice",
-    "role": "Co-Founder / COO / Head of BD",
-    "project": "Monad Foundation",
-    "notes": "Co-founded Monad with Keone Hon. ~84.4K followers. Active leader in crypto. Meets all inclusion criteria.",
-    "include": true,
-    "status": "Active"
-  },
-  {
     "source_founder": "Cooper Scanlon",
     "source_company": "Movement",
     "contact_name": "Rushi Manche",
@@ -674,18 +662,6 @@
   {
     "source_founder": "Guy Young",
     "source_company": "Ethena",
-    "contact_name": "Cindy Leow",
-    "x_handle": "cindyleowtt",
-    "x_url": "https://x.com/cindyleowtt",
-    "role": "Co-Founder",
-    "project": "Drift Protocol",
-    "notes": "Cofounder @DriftProtocol (Solana perps DEX); 19,458 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Guy Young",
-    "source_company": "Ethena",
     "contact_name": "buffalu",
     "x_handle": "buffalu__",
     "x_url": "https://x.com/buffalu__",
@@ -740,18 +716,6 @@
     "role": "Founder",
     "project": "Ambient Finance",
     "notes": "Founder @ambient_finance (concentrated liquidity DEX); 50,539 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Guy Young",
-    "source_company": "Ethena",
-    "contact_name": "Omer Goldberg",
-    "x_handle": "omeragoldberg",
-    "x_url": "https://x.com/omeragoldberg",
-    "role": "Founder",
-    "project": "Chaos Labs",
-    "notes": "Founder @chaoslabs (DeFi risk simulation/tooling); 10,040 followers",
     "include": true,
     "status": "Active"
   },
