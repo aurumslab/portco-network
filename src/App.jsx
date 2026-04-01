@@ -334,25 +334,6 @@ export default function App() {
               Portfolio
             </p>
 
-            {/* All */}
-            <button
-              onClick={() => setSelectedCompany(null)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-150 border ${
-                !selectedCompany
-                  ? 'bg-violet-600/15 text-violet-300 border-violet-500/25'
-                  : 'text-gray-400 hover:bg-gray-800/70 hover:text-gray-200 border-transparent'
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-xs">All Founders</span>
-                <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${
-                  !selectedCompany ? 'bg-violet-500/25 text-violet-300' : 'bg-gray-800 text-gray-500'
-                }`}>
-                  {contacts.length}
-                </span>
-              </div>
-            </button>
-
             {/* Per founder */}
             {foundersRaw.map(f => (
               <FounderRow
