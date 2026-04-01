@@ -185,6 +185,7 @@ export default function App() {
   const [filterStatus, setFilterStatus] = useState('all') // all | included | excluded
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact'
+  const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders'
 
   // Merge overrides into contacts
   const contacts = useMemo(
@@ -350,28 +351,15 @@ export default function App() {
         {/* ── Main ── */}
         <main className="flex-1 min-w-0">
 
-          {/* Filter bar */}
-          <div className="flex items-center gap-3 mb-4 flex-wrap">
-            <div className="relative flex-1 min-w-52">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <SearchIcon />
-              </span>
-              <input
-                type="text"
-                placeholder="Search name, project, role, notes…"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
-              />
-            </div>
-
+          {/* View tabs */}
+          <div className="flex items-center gap-2 mb-4">
             <div className="flex rounded-lg border border-gray-700 overflow-hidden text-xs">
-              {filterTabs.map(({ value, label }) => (
+              {[{ value: 'contacts', label: 'Contacts' }, { value: 'founders', label: 'Founders' }].map(({ value, label }) => (
                 <button
                   key={value}
-                  onClick={() => setFilterStatus(value)}
-                  className={`px-3.5 py-2 font-medium transition-colors ${
-                    filterStatus === value
+                  onClick={() => setMainView(value)}
+                  className={`px-4 py-2 font-medium transition-colors ${
+                    mainView === value
                       ? 'bg-violet-600 text-white'
                       : 'bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-gray-200'
                   }`}
@@ -382,29 +370,99 @@ export default function App() {
             </div>
           </div>
 
-          {/* Results label */}
-          <p className="text-xs text-gray-600 mb-4">
-            {filtered.length} contact{filtered.length !== 1 ? 's' : ''}
-            {selectedCompany && <span className="text-gray-500"> · {selectedCompany}</span>}
-            {search && <span className="text-gray-500"> · "{search}"</span>}
-          </p>
-
-          {/* Grid */}
-          {filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-24 text-gray-700 gap-3">
-              <EmptyIcon />
-              <p className="text-sm">No contacts match your filters</p>
+          {mainView === 'founders' ? (
+            /* ── Founders view ── */
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              {foundersRaw.map(f => {
+                const handles = Array.isArray(f.handle) ? f.handle : [f.handle]
+                const names = Array.isArray(f.founder) ? f.founder : [f.founder]
+                return (
+                  <div key={f.company} className="rounded-xl border border-gray-800 bg-gray-900 p-4 hover:border-gray-700 transition-all">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-semibold text-white text-sm">{f.company}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">{names.join(' & ')}</p>
+                        {f.notes ? <p className="text-xs text-gray-600 mt-1">{f.notes}</p> : null}
+                      </div>
+                      <div className="flex flex-col items-end gap-1.5 shrink-0">
+                        {handles.filter(h => h).map((h, i) => (
+                          <a
+                            key={h}
+                            href={`https://x.com/${h}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs text-sky-400 hover:text-sky-300 transition-colors"
+                          >
+                            <XLogo />
+                            @{h}
+                          </a>
+                        ))}
+                        {handles.filter(h => h).length === 0 && (
+                          <span className="text-xs text-gray-700 italic">no handle</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              {filtered.map((contact, i) => (
-                <ContactCard
-                  key={(contact.x_handle || contact.contact_name) + i}
-                  contact={contact}
-                  onToggle={handleToggle}
-                />
-              ))}
-            </div>
+            /* ── Contacts view ── */
+            <>
+              {/* Filter bar */}
+              <div className="flex items-center gap-3 mb-4 flex-wrap">
+                <div className="relative flex-1 min-w-52">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <SearchIcon />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search name, project, role, notes…"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
+                  />
+                </div>
+                <div className="flex rounded-lg border border-gray-700 overflow-hidden text-xs">
+                  {filterTabs.map(({ value, label }) => (
+                    <button
+                      key={value}
+                      onClick={() => setFilterStatus(value)}
+                      className={`px-3.5 py-2 font-medium transition-colors ${
+                        filterStatus === value
+                          ? 'bg-violet-600 text-white'
+                          : 'bg-gray-900 text-gray-400 hover:bg-gray-800 hover:text-gray-200'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <p className="text-xs text-gray-600 mb-4">
+                {filtered.length} contact{filtered.length !== 1 ? 's' : ''}
+                {selectedCompany && <span className="text-gray-500"> · {selectedCompany}</span>}
+                {search && <span className="text-gray-500"> · "{search}"</span>}
+              </p>
+
+              {filtered.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-24 text-gray-700 gap-3">
+                  <EmptyIcon />
+                  <p className="text-sm">No contacts match your filters</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                  {filtered.map((contact, i) => (
+                    <ContactCard
+                      key={(contact.x_handle || contact.contact_name) + i}
+                      contact={contact}
+                      onToggle={handleToggle}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </main>
       </div>
