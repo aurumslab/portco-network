@@ -1,0 +1,31 @@
+name: Filter Following List
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'raw/**.json'
+
+permissions:
+  contents: write
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run filter script
+        run: python scripts/filter_following.py
+
+      - name: Commit updated contacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/contacts.json
+          git diff --cached --quiet && echo "No changes to commit" || \
+            git commit -m "Auto-filter: merge new following list into contacts" && git push

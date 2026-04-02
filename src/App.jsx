@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import SettingsModal from './components/SettingsModal.jsx'
 import AddFounderModal from './components/AddFounderModal.jsx'
 import AddContactModal from './components/AddContactModal.jsx'
+import UploadFollowingModal from './components/UploadFollowingModal.jsx'
 
 const STORAGE_KEY = 'contact_pool_overrides'
 
@@ -184,7 +185,7 @@ export default function App() {
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState('included') // all | included | excluded
   const [selectedCompany, setSelectedCompany] = useState(null)
-  const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact'
+  const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact' | 'upload'
   const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders'
 
   // Merge overrides into contacts
@@ -299,6 +300,12 @@ export default function App() {
 
             {/* Action buttons */}
             <div className="flex items-center gap-2 ml-2">
+              <button
+                onClick={() => setActiveModal('upload')}
+                className="text-xs px-3 py-1.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white transition-all font-medium"
+              >
+                ↑ Upload List
+              </button>
               <button
                 onClick={() => setActiveModal('addFounder')}
                 className="text-xs px-3 py-1.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white transition-all font-medium"
@@ -484,6 +491,9 @@ export default function App() {
           onClose={() => setActiveModal(null)}
           onAdded={updated => setContactsRaw(updated)}
         />
+      )}
+      {activeModal === 'upload' && (
+        <UploadFollowingModal onClose={() => setActiveModal(null)} />
       )}
     </div>
   )

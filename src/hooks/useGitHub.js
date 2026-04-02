@@ -37,6 +37,8 @@ export function useGitHub() {
 
   async function putFile(path, data, sha, message) {
     const { token, owner, repo } = getConfig()
+    const body = { message, content: encode(JSON.stringify(data, null, 2)) }
+    if (sha) body.sha = sha
     const res = await fetch(`${BASE}/repos/${owner}/${repo}/contents/${path}`, {
       method: 'PUT',
       headers: {
@@ -44,11 +46,25 @@ export function useGitHub() {
         Accept: 'application/vnd.github+json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        message,
-        content: encode(JSON.stringify(data, null, 2)),
-        sha,
-      }),
+      body: JSON.stringify(body),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.message || `GitHub API ${res.status}`)
+    }
+    return res.json()
+  }
+
+  async function uploadRawFile(path, content, message) {
+    const { token, owner, repo } = getConfig()
+    const res = await fetch(`${BASE}/repos/${owner}/${repo}/contents/${path}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message, content: encode(content) }),
     })
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
@@ -65,5 +81,5 @@ export function useGitHub() {
     return updated
   }
 
-  return { isConfigured, appendEntry }
+  return { isConfigured, appendEntry, uploadRawFile }
 }
