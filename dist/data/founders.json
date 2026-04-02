@@ -73,9 +73,9 @@
   },
   {
     "company": "Monad",
-    "founder": "Keone Hon",
-    "handle": "keoneHD",
-    "notes": ""
+    "founder": ["Keone Hon", "Eunice Giarta"],
+    "handle": ["keoneHD", "0x_eunice"],
+    "notes": "Co-founders"
   },
   {
     "company": "Movement",

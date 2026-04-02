@@ -326,11 +326,11 @@ export default function App() {
         </div>
       </header>
 
-      <div className="flex flex-1 max-w-screen-xl mx-auto w-full px-5 py-6 gap-6">
+      <div className="flex flex-1 max-w-screen-xl mx-auto w-full px-5 py-6 gap-6 overflow-hidden">
 
         {/* ── Sidebar ── */}
-        <aside className="w-52 shrink-0 hidden md:block">
-          <div className="sticky top-20 space-y-1">
+        <aside className="w-52 shrink-0 hidden md:flex flex-col" style={{height: 'calc(100vh - 56px)', position: 'sticky', top: '56px'}}>
+          <div className="overflow-y-auto flex-1 space-y-1 pr-1">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-3 mb-2">
               Portfolio
             </p>
@@ -349,7 +349,8 @@ export default function App() {
         </aside>
 
         {/* ── Main ── */}
-        <main className="flex-1 min-w-0">
+        <main className="flex-1 min-w-0 overflow-y-auto" style={{height: 'calc(100vh - 56px)'}}>
+
 
           {/* View tabs */}
           <div className="flex items-center gap-2 mb-4">
