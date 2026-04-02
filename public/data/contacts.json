@@ -32,8 +32,8 @@
     "role": "Co-Founder / CTO",
     "project": "Berachain",
     "notes": "Pseudonymous co-founder and CTO of Berachain, ex-Apple engineer. ~51.8K followers. Core technical operator at a significant EVM-compatible L1. Meets all inclusion criteria.",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-02-04"
   },
   {
     "source_founder": "Pacman",
@@ -80,8 +80,8 @@
     "role": "Co-Founder / Core Contributor",
     "project": "Drift Protocol",
     "notes": "Co-founded Drift Protocol with Cindy Leow in 2021. ~8,246 followers. Active builder on Solana DeFi. Meets all inclusion criteria.",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-01-28"
   },
   {
     "source_founder": "Guy Young",
@@ -224,8 +224,8 @@
     "role": "Co-Founder",
     "project": "Sapien / Polymath / Polymesh",
     "notes": "Co-founded Sapien alongside Rowan Marrs. Also founded Polymath and Polymesh (leading RWA blockchain). ~7,334 followers. Active crypto founder/builder. Meets all inclusion criteria.",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-01-22"
   },
   {
     "source_founder": "Rowan Marrs",
@@ -740,8 +740,8 @@
     "role": "Founder",
     "project": "Klyra",
     "notes": "Building @Klyra (DeFi infra); Thiel Fellow; 11,133 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — no recent tweets"
   },
   {
     "source_founder": "Guy Young",
@@ -764,8 +764,8 @@
     "role": "Co-Founder",
     "project": "Tangent",
     "notes": "Co-founder @tangent_xyz; 48,547 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-01-17"
   },
   {
     "source_founder": "Guy Young",
@@ -956,8 +956,8 @@
     "role": "Founder",
     "project": "radixdlt",
     "notes": "Founder of @radixdlt $xrd, technologist, petrol head and #bitcoin / #crypto #web3 evangelist.  Opini — 203,339 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-07-16"
   },
   {
     "source_founder": "Jack",
@@ -1016,8 +1016,8 @@
     "role": "Founder / Builder",
     "project": "Slerf",
     "notes": "Building the future of web3 through community, products, and innovation. 9999FVbjHioTcoJpoBiSjpxHW6x — 165,981 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-10-11"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -1028,8 +1028,8 @@
     "role": "CEO",
     "project": "MANTRA_Chain",
     "notes": "CEO & Founder @MANTRA_Chain 🫡🕉️ | $OM | Building THE L1 for Real World Assets | Likes/RTs != endorse — 162,977 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — no recent tweets"
   },
   {
     "source_founder": "Ray",
@@ -1064,8 +1064,8 @@
     "role": "Founder",
     "project": "BuildOnCyber",
     "notes": "The trusted gateway to web3 organizations and creators. \n\nBuilt with @BuildOnCyber 🔗 — 158,350 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-07-09"
   },
   {
     "source_founder": "Forrest Liu",
@@ -1100,8 +1100,8 @@
     "role": "Founder / Builder",
     "project": "Nobody🌟",
     "notes": "Every nobody is somebody. Building a Web3 based IP facing the mainstream Web2 audiences. https://t.c — 151,546 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-03-02"
   },
   {
     "source_founder": "Yu Hu",
@@ -1112,8 +1112,8 @@
     "role": "Founder / Builder",
     "project": "Dremicaofficial",
     "notes": "Building a web3 MMO @Dremicaofficial — 149,802 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-01-15"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -1124,18 +1124,6 @@
     "role": "Founder",
     "project": "ensofi_dao",
     "notes": "Cross-chain DeFi Hub \nLend, Borrow, LSTs, Earn & more with stable returns. \nBuilt by @ensofi_dao\nAva — 145,774 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Yu Hu",
-    "source_company": "Kaito",
-    "contact_name": "Chain",
-    "x_handle": "Chain",
-    "x_url": "https://x.com/Chain",
-    "role": "Founder / Builder",
-    "project": "Chain",
-    "notes": "Moving Money at Internet Speed. Start building on @Chain. — 142,512 followers",
     "include": true,
     "status": "Active"
   },
@@ -1160,8 +1148,8 @@
     "role": "Founder / Builder",
     "project": "NEAR AI Legion",
     "notes": "Building the strongest AI community in crypto. Prepare for ASI - Find NEARvana. Join Today! — 133,538 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-01-19"
   },
   {
     "source_founder": "Pengyu",
@@ -1232,8 +1220,8 @@
     "role": "Founder",
     "project": "Hey Wallet!",
     "notes": "World’s first mobile wallet built for Twitter/𝕏. Send meme coins to 𝕏 handles & swap them on Telegra — 120,524 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-01-09"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -1340,8 +1328,8 @@
     "role": "CEO",
     "project": "artsch00lreject",
     "notes": "🐸🌎 🫵😹🤍🎀 art/crypto/memes/marketing/mwo——— ✞★✞★ ( NFA ) CEO of CAT COINS (100BILLION in ASSETS UNDER — 108,911 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Meme coin CEO with marketing focus, not protocol builder"
   },
   {
     "source_founder": "Yu Hu",
@@ -1352,8 +1340,8 @@
     "role": "Founder",
     "project": "mulligan",
     "notes": "PREMINT is web3’s allowlist platform. Built by @mulligan — 105,250 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2024-04-12"
   },
   {
     "source_founder": "YQ Jia",
@@ -1364,8 +1352,8 @@
     "role": "Founder",
     "project": "Polynomial",
     "notes": "crypto, Indices, commodities and forex all on one platform. ✨ come say gm https://t.co/n5M5VF5Z5N. b — 104,449 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-02-13"
   },
   {
     "source_founder": "Cindy Leow",
@@ -1388,8 +1376,8 @@
     "role": "Founder / Builder",
     "project": "Hemera",
     "notes": "Blockchain Data Layer. Building SocialScan Explorer and https://t.co/mnBe1vATJi — 101,686 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-02-27"
   },
   {
     "source_founder": "Pengyu",
@@ -1412,8 +1400,8 @@
     "role": "Founder",
     "project": "what",
     "notes": "A DeFi-centric team focused on community & Transparency. // Doing everything right... that Sam did w — 96,694 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — org/project account, not individual"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -1424,8 +1412,8 @@
     "role": "Founder",
     "project": "zkLendIntern",
     "notes": "The native L2 money-market protocol built on Starknet. \n\nFor notes: @zkLendIntern — 94,955 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-08-30"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -1436,8 +1424,8 @@
     "role": "Founder",
     "project": "Use Morpheus",
     "notes": "A multi-agent coordination platform purpose-built for Web3 communities. — 93,621 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-09-08"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -1508,8 +1496,8 @@
     "role": "Founder",
     "project": "Alliance",
     "notes": "The leading crypto accelerator & founder community.\n\nApply by March 25 to receive $500k funding: htt — 85,276 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — org/project account, not individual"
   },
   {
     "source_founder": "Keone Hon",
@@ -1556,20 +1544,8 @@
     "role": "Founder / Builder",
     "project": "PlayBattlePlan",
     "notes": "Creators of @PlayBattlePlan, @PunksComic & @MetaHero_PV. Building at the crossroad of NFTs, DeFi, an — 80,193 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Yu Hu",
-    "source_company": "Kaito",
-    "contact_name": "Mavryk Network | Tokenizing $10B in RWAs",
-    "x_handle": "MavrykNetwork",
-    "x_url": "https://x.com/MavrykNetwork",
-    "role": "Founder",
-    "project": "Mavryk Network | Tokenizing $10B in RWAs",
-    "notes": "Tokenizing Real-World Assets & integrating w/DeFi | $10B+ RWA tokenization deal SIGNED | Powered by — 79,890 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-09-15"
   },
   {
     "source_founder": "Smoky",
@@ -1592,8 +1568,8 @@
     "role": "Founder / Builder",
     "project": "Junø",
     "notes": "Permissionless L1 for building seamless interoperable applications, providing an accessible environm — 76,478 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-12-03"
   },
   {
     "source_founder": "Yu Hu",
@@ -1616,8 +1592,8 @@
     "role": "Co-Founder",
     "project": "edgentech",
     "notes": "Cofounder of Edgen, building next-gen AI copilot for stock and crypto investors @edgentech | Foundin — 75,265 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-02-23"
   },
   {
     "source_founder": "Rowan Marrs",
@@ -1628,8 +1604,8 @@
     "role": "Founder / Builder",
     "project": "KVESTOR",
     "notes": "VYSYN - Building & Financing Web3 | Managing Partner #NAKA | 🌐 Empowering the Future of the Internet — 75,053 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — no recent tweets"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -1688,8 +1664,8 @@
     "role": "Founder",
     "project": "DeSo",
     "notes": "The first & only censorship-resistant Layer-1 blockchain purpose-built to power storage-heavy apps a — 67,212 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2026-02-09"
   },
   {
     "source_founder": "Jack",
@@ -1712,8 +1688,8 @@
     "role": "Founder",
     "project": "xibit_app",
     "notes": "Founder @xibit_app Artists platform for sustainable income and @vitruveochain AI-first Blockchain — 66,328 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — no recent tweets"
   },
   {
     "source_founder": "Jack",
@@ -1760,8 +1736,8 @@
     "role": "Founder",
     "project": "Movementlabsxyz",
     "notes": "a fully on-chain Central Limit Order Book (CLOB) system built on @Movementlabsxyz. — 60,945 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-06-25"
   },
   {
     "source_founder": "Pengyu",
@@ -1772,8 +1748,8 @@
     "role": "Co-Founder",
     "project": "SOL Boss",
     "notes": "Co-founder - crypto insider | discord permanently closed | RT = AD — 60,797 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2023-05-21"
   },
   {
     "source_founder": "TN Lee",
@@ -1784,8 +1760,8 @@
     "role": "Founder",
     "project": "Harvest",
     "notes": "A community-built platform for DeFi yield farming. — 60,139 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — org/project account, not individual"
   },
   {
     "source_founder": "YQ Jia",
@@ -1808,8 +1784,8 @@
     "role": "Founder / Builder",
     "project": "doublerFndn",
     "notes": "An investment strategy protocol aggregating market liquidity. Powered by @doublerFndn | Building on — 59,043 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-03-20"
   },
   {
     "source_founder": "Jack",
@@ -1856,8 +1832,8 @@
     "role": "Founder / Builder",
     "project": "berachain",
     "notes": "101 absolutely zooted NFT bears. Web3's first rebasing NFT. Building @berachain 5 Re-Bases complete. — 53,232 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2024-06-09"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -1868,8 +1844,8 @@
     "role": "Founder / Builder",
     "project": "Kriya",
     "notes": "building in peace 🧘‍♂️ building on sui💧\nswap | limit orders | 1-click yield strategies — 52,941 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-07-18"
   },
   {
     "source_founder": "Pengyu",
@@ -1904,8 +1880,8 @@
     "role": "Founder / Builder",
     "project": "0xFluid",
     "notes": "Building a full suite of products: Lite, @0xFluid, @Avowallet to bring DeFi to the masses.\n\nhttps:// — 50,688 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-03-24"
   },
   {
     "source_founder": "YQ Jia",
@@ -1940,8 +1916,8 @@
     "role": "Founder / Builder",
     "project": "LANIAKEA",
     "notes": "Welcome to LANIAKEA! 🎮Building a Cross-platform web3 MMORPG. 🏰 Discord: https://t.co/A4UY6INSpb 📰 TG — 50,183 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-11-05"
   },
   {
     "source_founder": "Jack",
@@ -2000,8 +1976,8 @@
     "role": "Founder",
     "project": "Dukakis Tejada",
     "notes": "Product, GTM & growth operator. Building products, ecosystems, and communities from zero to scale. F — 44,942 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — no recent tweets"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -2036,8 +2012,8 @@
     "role": "Founder / Builder",
     "project": "hey_maybe_ai",
     "notes": "Web3’s AAA Growth Solution: Analyze, Act, Achieve!\nBuilding @hey_maybe_ai & @OmniMCP — 44,036 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-12-22"
   },
   {
     "source_founder": "Yu Hu",
@@ -2096,8 +2072,8 @@
     "role": "Founder",
     "project": "KunGarden_nft",
     "notes": "Founder @KunGarden_nft @jpeg_street\nInitiator @Azuki China community, NFT新手村\nMember @SccDao\nNFT Enth — 42,144 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — no recent tweets"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -2108,8 +2084,8 @@
     "role": "Founder / Builder",
     "project": "Tnut",
     "notes": "Strategy & Growth | Building outside crypto — 41,740 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Strategy & Growth role, building outside crypto"
   },
   {
     "source_founder": "Jack",
@@ -2120,8 +2096,8 @@
     "role": "Co-Founder",
     "project": "peakagency_io",
     "notes": "Web3 Growth & Community Builder \n\n- Co-Founder of @peakagency_io\n- Pudgy Penguin #7555 Holder\n- Amba — 40,406 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Web3 growth/community builder + ambassador role"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -2180,20 +2156,8 @@
     "role": "Founder",
     "project": "Aspen | Web3 Membership Platform",
     "notes": "Built to empower web3 creators. \n\nRedefine community membership in web3, set up crypto subscriptions — 39,103 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "TN Lee",
-    "source_company": "Pendle",
-    "contact_name": "Set Labs ⚖️",
-    "x_handle": "SetProtocol",
-    "x_url": "https://x.com/SetProtocol",
-    "role": "Founder",
-    "project": "Set Labs ⚖️",
-    "notes": "We built Set Protocol, an open-source protocol for launching market-leading, innovative DeFi structu — 38,819 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2023-12-15"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -2300,8 +2264,8 @@
     "role": "Founder / Builder",
     "project": "Refracted_Labs",
     "notes": "Building things with @Refracted_Labs | TradFi ➡ DeFi | prev. Goldman Sachs & JPMorgan — 35,258 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-11-06"
   },
   {
     "source_founder": "Josh Horne",
@@ -2312,8 +2276,8 @@
     "role": "Founder",
     "project": "solana",
     "notes": "A new independent validator client for the @solana blockchain, built by @jump_. — 35,055 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-12-12"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -2324,8 +2288,8 @@
     "role": "Founder",
     "project": "Anthony Di Iorio",
     "notes": "Striving to build a new generation of leaders and problem solvers. Founder Andiami, Ethereum, Decent — 34,855 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — last tweet 2025-08-15"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -2564,8 +2528,8 @@
     "role": "Founder / Builder",
     "project": "ETH Silicon Valley",
     "notes": "Building community around Ethereum in Santa Clara Valley. — 28,996 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Community group account, not individual founder"
   },
   {
     "source_founder": "YQ Jia",
@@ -2576,20 +2540,8 @@
     "role": "Founder",
     "project": "Revolut",
     "notes": "Perp Dex built by ex- @Revolut team. Join the community: https://t.co/vZ8bO1ePUv — 28,932 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Cindy Leow",
-    "source_company": "Drift",
-    "contact_name": "Jiraiya",
-    "x_handle": "JiraiyaReal",
-    "x_url": "https://x.com/JiraiyaReal",
-    "role": "Founder",
-    "project": "TailoredWeb3",
-    "notes": "Crypto growth since '17 · We only market what we'd use ourselves · Then build systems to scale that — 27,666 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Official project account, not individual founder"
   },
   {
     "source_founder": "Yu Hu",
@@ -2732,8 +2684,8 @@
     "role": "Founder / Builder",
     "project": "Shahab",
     "notes": "20+ years of brand building across Web2 & Web3.\n\nEx-GoPro & Liquid Death strategist. — 25,444 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Brand strategist (Web2/Web3 marketing), not protocol/tech builder"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -2900,8 +2852,8 @@
     "role": "Founder",
     "project": "berachain",
     "notes": "The First ERC404 on @berachain built for DeFi Degens . Mint live on : https://t.co/0JTuvKeaLB — 23,176 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — NFT/project account, tagline targets degens not builders"
   },
   {
     "source_founder": "Yu Hu",
@@ -3036,18 +2988,6 @@
     "status": "Active"
   },
   {
-    "source_founder": "TN Lee",
-    "source_company": "Pendle",
-    "contact_name": "Ondefy Labs⛵️",
-    "x_handle": "Ondefy",
-    "x_url": "https://x.com/Ondefy",
-    "role": "Founder / Builder",
-    "project": "zyfi_org",
-    "notes": "Ondefy Labs builds services for an abstracted on-chain experience.\nBuilding @zyfi_org and @zyfAI_ \nh — 19,651 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
     "source_founder": "Ethan Buchman",
     "source_company": "Cycles Money",
     "contact_name": "Evan Shapiro",
@@ -3068,18 +3008,6 @@
     "role": "Founder / Builder",
     "project": "Jordi Baylina - baylina.eth",
     "notes": "Blockchain developer, Ethereum fan, white hat hacker and Catalonia Freedom fighter. Currently buildi — 19,230 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Yu Hu",
-    "source_company": "Kaito",
-    "contact_name": "Orange DAO 🍊 | founders wanted",
-    "x_handle": "OrangeDAOxyz",
-    "x_url": "https://x.com/OrangeDAOxyz",
-    "role": "Founder",
-    "project": "Orange DAO 🍊 | founders wanted",
-    "notes": "Join the best founder community in crypto. Now accepting applications. \n\n🍊 = Join the revolution — 19,073 followers",
     "include": true,
     "status": "Active"
   },
@@ -3392,8 +3320,8 @@
     "role": "Founder",
     "project": "Syndicateweb",
     "notes": "Web3 Career • Community • Growth • Strategy ➠ Co - founder @Syndicateweb || Partner @Dexsport — 15,363 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Community/growth/strategy focus, not technical builder"
   },
   {
     "source_founder": "Jack",
@@ -3428,8 +3356,8 @@
     "role": "Founder / Builder",
     "project": "polyinsider_",
     "notes": "Crypto Enthusiast Since 2014 | Hopium Provider | Crypto advocate | Leak GCR | Dm for serious collabs — 15,136 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Crypto influencer/hopium content account, not founder/operator"
   },
   {
     "source_founder": "YQ Jia",
@@ -3500,8 +3428,8 @@
     "role": "Founder / Builder",
     "project": "New Order",
     "notes": "A community-led incubation DAO building edge-of-the-edge Web3 projects. — 14,453 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — org/project account, not individual"
   },
   {
     "source_founder": "Keone Hon",
@@ -3644,8 +3572,8 @@
     "role": "CEO",
     "project": "Cointelegraph",
     "notes": "In blockchain since 2017 with passion and mission, ex-CEO@Cointelegraph CN, global PR/marketing root — 12,625 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — PR/marketing background, media exec not protocol builder"
   },
   {
     "source_founder": "Ray",
@@ -3692,8 +3620,8 @@
     "role": "Founder",
     "project": "Elsa Schneider",
     "notes": "DeFi advocate 🌍 Co founder /CMO — 12,422 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — CMO/marketing role, not technical operator"
   },
   {
     "source_founder": "Ran Yi",
@@ -4076,8 +4004,8 @@
     "role": "Co-Founder",
     "project": "Microsoft",
     "notes": "CTO, CMO & Creative Innovator embracing shiny new objects before they shine.  #web3 #blockchain #cry — 9,525 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — CMO + creative innovator, not technical builder"
   },
   {
     "source_founder": "YQ Jia",
@@ -4100,8 +4028,8 @@
     "role": "Founder / Builder",
     "project": "Venus97",
     "notes": "Community builder | Connecting minds in the Web3 space for a better tomorrow. — 9,453 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — community builder/growth role, not technical operator"
   },
   {
     "source_founder": "Yu Hu",
@@ -4124,8 +4052,8 @@
     "role": "Founder",
     "project": "Tasso Lago",
     "notes": "Biggest KOL 🇧🇷; crypto since 2017 ; founder of the biggest Edtech Latam. Forbes 30U30\n\nSee what I am — 9,268 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — KOL/ambassador role"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -4244,8 +4172,8 @@
     "role": "Co-Founder",
     "project": "DesunHK",
     "notes": "WEB3 adventurer from 2017｜CMO of @DesunHK | Cofounder of @MetaeraCN｜独立策展人｜Web3赏金猎人（小白友好）｜不代表官方，不做投资建 — 8,808 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — CMO role, community-focused"
   },
   {
     "source_founder": "Smoky",
@@ -4296,18 +4224,6 @@
     "status": "Active"
   },
   {
-    "source_founder": "Forrest Liu",
-    "source_company": "Opinion Lab",
-    "contact_name": "HypeX Labs",
-    "x_handle": "HypeX_io",
-    "x_url": "https://x.com/HypeX_io",
-    "role": "Founder / Builder",
-    "project": "d3x_xyz",
-    "notes": "Bring Liquidity and Utility to All Assets. Building @d3x_xyz & @d3x_exchange — 8,655 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
     "source_founder": "Alex Svanevik",
     "source_company": "Nansen",
     "contact_name": "trent e",
@@ -4340,8 +4256,8 @@
     "role": "Founder / Builder",
     "project": "ECH Institute Inc.",
     "notes": "Education, Community Building, Homesteading Ethereum! 😸 — 8,421 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — community builder/growth role, not technical operator"
   },
   {
     "source_founder": "Cooper Scanlon",
@@ -4436,18 +4352,6 @@
     "role": "Founder / Builder",
     "project": "Ante ⚙️",
     "notes": "Building Ante Vaults: make sure your crypto reaches the right hands. Secure self-custody with sensib — 7,850 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
-    "source_founder": "Cooper Scanlon",
-    "source_company": "Movement",
-    "contact_name": "Doki Labs 😈",
-    "x_handle": "doki_labs",
-    "x_url": "https://x.com/doki_labs",
-    "role": "Founder / Builder",
-    "project": "dokisofficial",
-    "notes": "A web3 lab building innovative projects and dApps.\n\nDokis Animation Studio: @dokisofficial - launchi — 7,803 followers",
     "include": true,
     "status": "Active"
   },
@@ -4832,8 +4736,8 @@
     "role": "Co-Founder",
     "project": "tokenpunkdao",
     "notes": "Co-founder of Cryptopunks Chinese Community|Web3 bestselling author《Web3超入门》《NFT》《元宇宙时代》|Core of @to — 6,608 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — Chinese community co-founder, author — not protocol builder"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -4968,18 +4872,6 @@
     "status": "Active"
   },
   {
-    "source_founder": "YQ Jia",
-    "source_company": "Altlayer",
-    "contact_name": "{QuillAI Network}",
-    "x_handle": "QuillAI_Network",
-    "x_url": "https://x.com/QuillAI_Network",
-    "role": "Founder / Builder",
-    "project": "{QuillAI Network}",
-    "notes": "Swarming adversarial AI agents delivering AGI-grade security for Web3 & AI systems || Building the t — 6,252 followers",
-    "include": true,
-    "status": "Active"
-  },
-  {
     "source_founder": "Alex Svanevik",
     "source_company": "Nansen",
     "contact_name": "Gug 📊 | Slice Analytics",
@@ -5036,8 +4928,8 @@
     "role": "Founder",
     "project": "comster",
     "notes": "Own a bit of onchain history! Buy pixels, get an NFT, be in our games. Join the community 👇 Built by — 5,856 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — org/project account, not individual"
   },
   {
     "source_founder": "TN Lee",
@@ -5084,8 +4976,8 @@
     "role": "Founder / Builder",
     "project": "Women in Blockchain 🌟",
     "notes": "On a mission to enable a diverse crypto ecosystem through education and community building 🌟 | WiB i — 5,684 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — org/project account, not individual"
   },
   {
     "source_founder": "Ethan Buchman",
@@ -5180,8 +5072,8 @@
     "role": "Co-Founder",
     "project": "cgvfof",
     "notes": "#Bitcoin #WEB3 #Crypto Partner of @cgvfof Co-Founder of @BSKOLClubCN 半山KOL俱乐部 前共识实验室创始合伙人 @lkventure — 5,397 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — KOL club co-founder, VC partner — not operator"
   },
   {
     "source_founder": "YQ Jia",
@@ -5204,8 +5096,8 @@
     "role": "Founder",
     "project": "sikiri0",
     "notes": "비트코인, 그것은 반짝인다.\n\n★ 6th year in Web3, since 2021\n★ MASIL_DAO (Founder @sikiri0)\n★ Ambassador , @Memec — 5,358 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — KOL/ambassador role"
   },
   {
     "source_founder": "Yuki",
@@ -5300,8 +5192,8 @@
     "role": "Founder / Builder",
     "project": "lunarbaseX",
     "notes": "Building in web3|Comm & Growth Strategist|All opinions are mine|BD @lunarbaseX, @Mace_ag, @Something — 5,104 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — community builder/growth role, not technical operator"
   },
   {
     "source_founder": "Omer Goldberg",
@@ -5348,8 +5240,8 @@
     "role": "Founder / Builder",
     "project": "VixoProtocol",
     "notes": "Interested in Web3 and decentralized tech | Exploring, building, staying early, Ambassador @VixoProt — 5,053 followers",
-    "include": true,
-    "status": "Active"
+    "include": false,
+    "status": "Excluded — KOL/ambassador role"
   },
   {
     "source_founder": "YQ Jia",
