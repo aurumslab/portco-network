@@ -183,7 +183,7 @@ export default function App() {
     catch { return {} }
   })
   const [search, setSearch] = useState('')
-  const [filterStatus, setFilterStatus] = useState('included') // all | included | excluded
+  const [filterStatus, setFilterStatus] = useState('all') // all | included | excluded
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact' | 'upload'
   const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders'
