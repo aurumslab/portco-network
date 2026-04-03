@@ -483,6 +483,7 @@ export default function App() {
         <AddFounderModal
           onClose={() => setActiveModal(null)}
           onAdded={updated => setFoundersRaw(updated)}
+          existingFounders={foundersRaw}
         />
       )}
       {activeModal === 'addContact' && (
