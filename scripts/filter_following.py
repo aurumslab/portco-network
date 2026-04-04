@@ -65,9 +65,28 @@ HIGH_PROFILE_EXCLUDE = [
 ]
 
 
+WEB3_KEYWORDS = [
+    'crypto', 'web3', 'web 3', 'blockchain', 'defi', 'nft', 'dao',
+    'ethereum', 'solana', 'bitcoin', 'layer 2', 'l2', 'layer2',
+    'protocol', 'onchain', 'on-chain', 'on chain', 'token', 'wallet',
+    'dapp', 'decentralized', 'decentralised', 'smart contract',
+    'zk', 'zero knowledge', 'rollup', 'consensus', 'validator',
+    'staking', 'yield', 'liquidity', 'dex', 'cex', 'perp',
+    'cosmos', 'polkadot', 'avalanche', 'aptos', 'sui', 'monad',
+    'solidity', 'rust', 'move ', 'foundry', 'hardhat',
+    'paradigm', 'a16z crypto', 'multicoin', 'binance', 'coinbase',
+    'sequoia crypto', 'dragonfly', 'polychain',
+]
+
+
 def is_builder(bio: str) -> bool:
     b = bio.lower()
     return any(k in b for k in BUILDER_KEYWORDS)
+
+
+def is_web3(bio: str) -> bool:
+    b = bio.lower()
+    return any(k in b for k in WEB3_KEYWORDS)
 
 
 def should_exclude(bio: str) -> tuple[bool, str]:
@@ -172,6 +191,11 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
         # Filter: must be builder
         if not is_builder(bio):
             skipped_reasons[handle] = 'no builder/founder signal in bio'
+            continue
+
+        # Filter: must be in crypto/Web3 domain
+        if not is_web3(bio):
+            skipped_reasons[handle] = 'no crypto/web3 signal in bio'
             continue
 
         # Filter: exclude signals
