@@ -131,7 +131,7 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
     skipped_reasons = {}
 
     for person in following:
-        handle = (person.get('handle') or person.get('username') or '').strip()
+        handle = (person.get('handle') or person.get('username') or person.get('screen_name') or '').strip()
         if not handle:
             continue
 
@@ -140,7 +140,12 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
             skipped_reasons[handle] = 'already in contacts'
             continue
 
-        followers = person.get('followers') or person.get('public_metrics', {}).get('followers_count') or 0
+        followers = (
+            person.get('followers') or
+            person.get('followers_count') or
+            person.get('normal_followers_count') or
+            person.get('public_metrics', {}).get('followers_count') or 0
+        )
         name = person.get('name') or handle
         bio = (person.get('bio') or person.get('description') or '').strip()
         x_url = person.get('x_url') or f'https://x.com/{handle}'
