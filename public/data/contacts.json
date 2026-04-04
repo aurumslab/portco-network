@@ -5254,5 +5254,101 @@
     "notes": "Previously @optimism\nCo-Founder & CTO @yield (defunct)\nCo-Author ERC4626 (Tokenized Vaults), ERC3156 — 5,033 followers",
     "include": true,
     "status": "Active"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "samczsun",
+    "x_handle": "samczsun",
+    "x_url": "https://x.com/samczsun",
+    "role": "Founder",
+    "project": "",
+    "notes": "founder @_SEAL_Org, security @tempo, art @Keiseeaaa — 156,792 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Vance Spencer",
+    "x_handle": "pythianism",
+    "x_url": "https://x.com/pythianism",
+    "role": "Co-Founder",
+    "project": "",
+    "notes": "Co-founder @hiframework. Tweets not financial advice. Views my own. May have assets in positions discussed. — 139,462 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Santiago R Santos",
+    "x_handle": "santiagoroel",
+    "x_url": "https://x.com/santiagoroel",
+    "role": "Founder",
+    "project": "",
+    "notes": "founder @inversion_cap | posts are not investment advice — 134,137 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Scott Sunarto",
+    "x_handle": "smsunarto",
+    "x_url": "https://x.com/smsunarto",
+    "role": "Founder / CEO",
+    "project": "",
+    "notes": "founder/ceo @ArgusLabs, (traumatized by) distributed systems, prev @Berkeley_EECS — 25,432 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Robert Leshner",
+    "x_handle": "rleshner",
+    "x_url": "https://x.com/rleshner",
+    "role": "CEO",
+    "project": "",
+    "notes": "CEO @superstateinc, Investor @robotventures, prev founded Compound; ardent capitalist; tweets are typically satire — 280,103 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Luana Lopes Lara",
+    "x_handle": "luanalopeslara",
+    "x_url": "https://x.com/luanalopeslara",
+    "role": "Founder",
+    "project": "",
+    "notes": "Founder @kalshi  \n\nLet the people trade — 65,674 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Jevgenijs Kazanins",
+    "x_handle": "jevgenijs",
+    "x_url": "https://x.com/jevgenijs",
+    "role": "Founder / Builder",
+    "project": "",
+    "notes": "Market development at @tempo.\nHobby fintech researcher at @popularfintech.\nViews are my own. — 13,653 followers",
+    "include": true,
+    "status": "AI-filtered"
+  },
+  {
+    "source_founder": "Matt Huang",
+    "source_company": "Tempo",
+    "contact_name": "Liam Horne",
+    "x_handle": "liamihorne",
+    "x_url": "https://x.com/liamihorne",
+    "role": "Co-Founder",
+    "project": "",
+    "notes": "building @tempo, cofounder @ethglobal, previously built @optimism — 18,587 followers",
+    "include": true,
+    "status": "AI-filtered"
   }
 ]
