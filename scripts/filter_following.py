@@ -82,38 +82,14 @@ def hard_exclude(bio: str, followers: int) -> tuple[bool, str]:
 
 # ── Claude judgment ───────────────────────────────────────────────────────────
 
-CLAUDE_SYSTEM = """You are filtering a list of Twitter/X accounts to find crypto/Web3 founders and operators worth a warm introduction.
-
-INCLUDE if ALL of:
-- Individual person (not a project/org/DAO account)
-- Active founder, co-founder, CEO, or CTO of a crypto/Web3 startup or protocol
-- Project is crypto/Web3 domain (blockchain, DeFi, NFT, L1/L2, wallet, infra, etc.)
-- Not too high-profile for a warm intro (not Vitalik, not Solana co-founder, etc.)
-
-EXCLUDE if ANY of:
-- VC / investor (even if they were formerly a founder)
-- Trading firm / market maker
-- Exchange CEO/founder of a major exchange
-- Content creator, influencer, analyst, KOL
-- Community/marketing/growth role without technical founder role
-- Org/project official account
-- Non-crypto domain (AI-only, biotech, fintech without blockchain, etc.)
-- Insufficient info to verify — default to exclude
-
-Respond with JSON only: {"include": true/false, "reason": "one sentence"}"""
+CLAUDE_SYSTEM = "Filter X accounts for crypto/Web3 founder warm intros. INCLUDE: individual founder/CEO/CTO of a crypto/Web3 project. EXCLUDE: VC/investor, trader, KOL, marketer, org account, non-crypto domain, insufficient info. Respond JSON only: {\"include\":true/false,\"reason\":\"<10 words\"}"
 
 
 def ask_claude(handle: str, name: str, bio: str, followers: int) -> tuple[bool, str]:
     if not ANTHROPIC_API_KEY:
-        # No API key — default include if passed keyword filter
         return True, 'No API key — passed keyword filter'
 
-    prompt = f"""Handle: @{handle}
-Name: {name}
-Bio: {bio}
-Followers: {followers:,}
-
-Should this person be included in the warm intro contact pool?"""
+    prompt = f"@{handle} | {name} | {bio} | {followers:,} followers"
 
     payload = json.dumps({
         'model': 'claude-haiku-4-5-20251001',
