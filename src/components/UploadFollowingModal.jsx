@@ -20,7 +20,7 @@ function Field({ label, value, onChange, placeholder, required }) {
   )
 }
 
-export default function UploadFollowingModal({ onClose }) {
+export default function UploadFollowingModal({ onClose, onUploaded }) {
   const { uploadRawFile, isConfigured } = useGitHub()
   const [founder, setFounder] = useState('')
   const [company, setCompany] = useState('')
@@ -79,13 +79,15 @@ export default function UploadFollowingModal({ onClose }) {
       const slug = founder.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       const ts = Date.now()
       const path = `raw/following-${slug}-${ts}.json`
+      const uploadedAt = Date.now()
 
       await uploadRawFile(
         path,
         JSON.stringify(wrapped, null, 2),
         `Upload following list: ${founder.trim()} (${company.trim()})`,
       )
-      setDone(true)
+      if (onUploaded) onUploaded(uploadedAt)
+      else setDone(true)
     } catch (e) {
       setError(e.message)
     } finally {

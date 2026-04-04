@@ -81,5 +81,36 @@ export function useGitHub() {
     return updated
   }
 
-  return { isConfigured, appendEntry, uploadRawFile }
+  async function pollWorkflow(workflowName, startedAfter, onStatus, signal) {
+    const { token, owner, repo } = getConfig()
+    const maxWait = 5 * 60 * 1000 // 5 min timeout
+    const interval = 8000
+    const started = Date.now()
+
+    while (Date.now() - started < maxWait) {
+      if (signal?.aborted) return 'cancelled'
+      await new Promise(r => setTimeout(r, interval))
+      if (signal?.aborted) return 'cancelled'
+
+      const res = await fetch(
+        `${BASE}/repos/${owner}/${repo}/actions/runs?per_page=5`,
+        { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+      )
+      if (!res.ok) continue
+      const data = await res.json()
+      const run = data.workflow_runs?.find(r =>
+        r.name === workflowName &&
+        new Date(r.created_at).getTime() >= startedAfter
+      )
+      if (!run) continue
+
+      onStatus(run.status, run.conclusion)
+      if (run.status === 'completed') {
+        return run.conclusion // 'success' | 'failure'
+      }
+    }
+    return 'timeout'
+  }
+
+  return { isConfigured, appendEntry, uploadRawFile, pollWorkflow }
 }

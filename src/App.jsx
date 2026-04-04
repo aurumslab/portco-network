@@ -1,8 +1,9 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import SettingsModal from './components/SettingsModal.jsx'
 import AddFounderModal from './components/AddFounderModal.jsx'
 import AddContactModal from './components/AddContactModal.jsx'
 import UploadFollowingModal from './components/UploadFollowingModal.jsx'
+import { useGitHub } from './hooks/useGitHub.js'
 
 const STORAGE_KEY = 'contact_pool_overrides'
 
@@ -162,6 +163,7 @@ function FounderRow({ founder, counts, selected, onClick }) {
 
 // ── Main App ───────────────────────────────────────────────────────────────
 export default function App() {
+  const { pollWorkflow } = useGitHub()
   const [foundersRaw, setFoundersRaw] = useState([])
   const [contactsRaw, setContactsRaw] = useState([])
   const [loading, setLoading] = useState(true)
@@ -187,6 +189,9 @@ export default function App() {
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact' | 'upload'
   const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders'
+  const [workflowStatus, setWorkflowStatus] = useState(null) // null | 'queued' | 'in_progress' | 'completed'
+  const [workflowResult, setWorkflowResult] = useState(null) // null | 'success' | 'failure' | 'timeout'
+  const pollAbortRef = useRef(null)
 
   // Merge overrides into contacts
   const contacts = useMemo(
@@ -332,6 +337,37 @@ export default function App() {
           </div>
         </div>
       </header>
+
+      {/* ── Workflow status banner ── */}
+      {workflowStatus && (
+        <div className={`w-full px-5 py-2.5 text-xs flex items-center justify-between gap-3 ${
+          workflowResult === 'success' ? 'bg-emerald-950/60 border-b border-emerald-800/40 text-emerald-400' :
+          workflowResult === 'failure' ? 'bg-red-950/60 border-b border-red-800/40 text-red-400' :
+          'bg-violet-950/60 border-b border-violet-800/40 text-violet-400'
+        }`}>
+          <div className="flex items-center gap-2">
+            {workflowStatus !== 'completed' && (
+              <svg className="w-3.5 h-3.5 animate-spin shrink-0" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            )}
+            {workflowResult === 'success' && <span>✓</span>}
+            {workflowResult === 'failure' && <span>✕</span>}
+            <span>
+              {workflowResult === 'success' && '篩選完成，聯絡人名單已更新！'}
+              {workflowResult === 'failure' && '篩選失敗，請到 GitHub Actions 查看錯誤'}
+              {workflowResult === 'timeout' && '等待逾時，請稍後手動重新整理'}
+              {!workflowResult && workflowStatus === 'queued' && '等待 GitHub Actions 啟動...'}
+              {!workflowResult && workflowStatus === 'in_progress' && '正在篩選 following list...'}
+            </span>
+          </div>
+          <button
+            onClick={() => { setWorkflowStatus(null); setWorkflowResult(null) }}
+            className="opacity-60 hover:opacity-100 transition-opacity"
+          >✕</button>
+        </div>
+      )}
 
       <div className="flex flex-1 max-w-screen-xl mx-auto w-full px-5 py-6 gap-6 overflow-hidden">
 
@@ -494,7 +530,27 @@ export default function App() {
         />
       )}
       {activeModal === 'upload' && (
-        <UploadFollowingModal onClose={() => setActiveModal(null)} />
+        <UploadFollowingModal
+          onClose={() => setActiveModal(null)}
+          onUploaded={(startedAt) => {
+            setActiveModal(null)
+            setWorkflowStatus('queued')
+            setWorkflowResult(null)
+            if (pollAbortRef.current) pollAbortRef.current.abort()
+            const controller = new AbortController()
+            pollAbortRef.current = controller
+            pollWorkflow('Filter Following List', startedAt, (status) => {
+              setWorkflowStatus(status)
+            }, controller.signal).then(result => {
+              setWorkflowResult(result)
+              setWorkflowStatus('completed')
+              if (result === 'success') {
+                const base = import.meta.env.BASE_URL
+                fetch(`${base}data/contacts.json?t=${Date.now()}`).then(r => r.json()).then(setContactsRaw)
+              }
+            })
+          }}
+        />
       )}
     </div>
   )
