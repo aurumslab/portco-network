@@ -271,7 +271,7 @@ export default function App() {
 
       {/* ── Header ── */}
       <header className="sticky top-0 z-20 border-b border-gray-800/80 bg-gray-950/90 backdrop-blur-md">
-        <div className="max-w-screen-xl mx-auto px-5 h-14 flex items-center justify-between gap-6">
+        <div className="max-w-screen-xl mx-auto px-4 min-h-14 flex items-center justify-between gap-3 flex-wrap py-2">
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 rounded-lg bg-violet-600/20 border border-violet-500/30 flex items-center justify-center shrink-0">
               <svg className="w-4 h-4 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -284,8 +284,8 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-4 text-xs text-gray-500">
+          <div className="flex items-center gap-2 flex-wrap justify-end">
+            <div className="hidden sm:flex items-center gap-4 text-xs text-gray-500">
               <div className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span className="font-semibold text-emerald-400">{globalStats.included}</span>
@@ -304,7 +304,7 @@ export default function App() {
             </div>
 
             {/* Action buttons */}
-            <div className="flex items-center gap-2 ml-2">
+            <div className="flex items-center gap-2">
               <button
                 data-upload
                 onClick={() => setActiveModal('upload')}
@@ -370,10 +370,10 @@ export default function App() {
         </div>
       )}
 
-      <div className="flex flex-1 max-w-screen-xl mx-auto w-full px-5 py-6 gap-6 overflow-hidden">
+      <div className="flex flex-1 max-w-screen-xl mx-auto w-full px-5 py-6 gap-6 md:overflow-hidden md:h-[calc(100vh-56px)]">
 
         {/* ── Sidebar ── */}
-        <aside className="w-52 shrink-0 hidden md:flex flex-col" style={{height: 'calc(100vh - 56px)', position: 'sticky', top: '56px'}}>
+        <aside className="w-52 shrink-0 hidden md:flex flex-col md:sticky md:top-14 md:self-start md:max-h-[calc(100vh-56px)]">
           <div className="overflow-y-auto flex-1 space-y-1 pr-1">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest px-3 mb-2">
               Portfolio
@@ -393,7 +393,7 @@ export default function App() {
         </aside>
 
         {/* ── Main ── */}
-        <main className="flex-1 min-w-0 overflow-y-auto" style={{height: 'calc(100vh - 56px)'}}>
+        <main className="flex-1 min-w-0 overflow-y-auto pb-8">
 
 
           {/* View tabs */}
