@@ -86,28 +86,46 @@ export function useGitHub() {
     const maxWait = 5 * 60 * 1000 // 5 min timeout
     const interval = 8000
     const started = Date.now()
+    // Allow 30s clock skew between local and GitHub server,
+    // but only match runs strictly newer than 60s before upload
+    const cutoff = startedAfter - 60 * 1000
+
+    // Wait 10s before first poll to give GitHub time to register the new run
+    await new Promise(r => setTimeout(r, 10000))
+
+    let foundRunId = null
 
     while (Date.now() - started < maxWait) {
       if (signal?.aborted) return 'cancelled'
-      await new Promise(r => setTimeout(r, interval))
-      if (signal?.aborted) return 'cancelled'
 
       const res = await fetch(
-        `${BASE}/repos/${owner}/${repo}/actions/runs?per_page=5`,
+        `${BASE}/repos/${owner}/${repo}/actions/runs?per_page=10`,
         { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
       )
-      if (!res.ok) continue
+      if (!res.ok) {
+        await new Promise(r => setTimeout(r, interval))
+        continue
+      }
       const data = await res.json()
+
+      // Find a run triggered after cutoff — once found, track it by ID
       const run = data.workflow_runs?.find(r =>
         r.name === workflowName &&
-        new Date(r.created_at).getTime() >= startedAfter
+        new Date(r.created_at).getTime() >= cutoff &&
+        (foundRunId === null || r.id === foundRunId) &&
+        (foundRunId !== null || r.status !== 'completed' || new Date(r.created_at).getTime() >= startedAfter - 5000)
       )
-      if (!run) continue
 
-      onStatus(run.status, run.conclusion)
-      if (run.status === 'completed') {
-        return run.conclusion // 'success' | 'failure'
+      if (run) {
+        foundRunId = run.id
+        onStatus(run.status, run.conclusion)
+        if (run.status === 'completed') {
+          return run.conclusion
+        }
       }
+
+      await new Promise(r => setTimeout(r, interval))
+      if (signal?.aborted) return 'cancelled'
     }
     return 'timeout'
   }
