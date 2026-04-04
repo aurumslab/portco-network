@@ -144,6 +144,15 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
         name = person.get('name') or handle
         bio = (person.get('bio') or person.get('description') or '').strip()
         x_url = person.get('x_url') or f'https://x.com/{handle}'
+        last_tweet_at = person.get('last_tweet_at') or None
+
+        # Filter: inactive (no tweet in 30 days) — only if data is available
+        if last_tweet_at is not None:
+            from datetime import datetime, timezone, timedelta
+            cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+            if last_tweet_at < cutoff:
+                skipped_reasons[handle] = f'inactive (last tweet {last_tweet_at[:10]})'
+                continue
 
         # Filter: followers
         if followers < MIN_FOLLOWERS:
