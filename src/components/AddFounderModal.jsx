@@ -29,6 +29,8 @@ export default function AddFounderModal({ onClose, onAdded, existingFounders = [
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [duplicate, setDuplicate] = useState(null)
+  const [done, setDone] = useState(false)
+  const [addedName, setAddedName] = useState('')
 
   const checkDuplicate = (companyVal, founderVal, handleVal) => {
     const cLower = companyVal.trim().toLowerCase()
@@ -85,12 +87,43 @@ export default function AddFounderModal({ onClose, onAdded, existingFounders = [
         `Add founder: ${company.trim()}`,
       )
       onAdded(updated)
-      onClose()
+      setAddedName(founder.trim())
+      setDone(true)
     } catch (e) {
       setError(e.message)
     } finally {
       setLoading(false)
     }
+  }
+
+  if (done) {
+    return (
+      <Modal title="新增成功" onClose={onClose}>
+        <div className="text-center py-4">
+          <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-300 mb-1"><strong>{addedName}</strong> 已加入 Founder 名單！</p>
+          <p className="text-xs text-gray-500 mb-5">接下來可以上傳他的 following list 讓系統自動篩選聯絡人。</p>
+          <div className="flex justify-center gap-2">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 text-xs text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              關閉
+            </button>
+            <button
+              onClick={() => { onClose(); setTimeout(() => document.querySelector('[data-upload]')?.click(), 100) }}
+              className="px-4 py-2 text-xs rounded-lg font-medium bg-violet-600 hover:bg-violet-500 text-white transition-all"
+            >
+              ↑ 上傳 Following List
+            </button>
+          </div>
+        </div>
+      </Modal>
+    )
   }
 
   return (
