@@ -7,8 +7,14 @@
   },
   {
     "company": "aPriori",
-    "founder": ["Ray", "Olivia"],
-    "handle": ["sing_me_a", "0xolivia_"],
+    "founder": [
+      "Ray",
+      "Olivia"
+    ],
+    "handle": [
+      "sing_me_a",
+      "0xolivia_"
+    ],
     "notes": "Multiple founders"
   },
   {
@@ -73,8 +79,14 @@
   },
   {
     "company": "Monad",
-    "founder": ["Keone Hon", "Eunice Giarta"],
-    "handle": ["keoneHD", "0x_eunice"],
+    "founder": [
+      "Keone Hon",
+      "Eunice Giarta"
+    ],
+    "handle": [
+      "keoneHD",
+      "0x_eunice"
+    ],
     "notes": "Co-founders"
   },
   {
@@ -153,6 +165,12 @@
     "company": "Virtuals",
     "founder": "Jansen Teng",
     "handle": "ethermage",
+    "notes": ""
+  },
+  {
+    "company": "Tempo",
+    "founder": "Matt Huang",
+    "handle": "matthuang",
     "notes": ""
   }
 ]
