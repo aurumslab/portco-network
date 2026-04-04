@@ -240,9 +240,17 @@ def main():
     existing_handles = {(c.get('x_handle') or '').lower() for c in contacts if c.get('x_handle')}
     print(f'Existing contacts: {len(contacts)}')
 
-    raw_files = sorted(glob.glob(os.path.join(RAW_DIR, '*.json')))
+    # Only process newly added files if RAW_FILES env var is set
+    raw_files_env = os.environ.get('RAW_FILES', '').strip()
+    if raw_files_env:
+        raw_files = [f.strip() for f in raw_files_env.split() if f.strip().endswith('.json') and os.path.exists(f.strip())]
+        print(f'Processing {len(raw_files)} new file(s) from this push...')
+    else:
+        raw_files = sorted(glob.glob(os.path.join(RAW_DIR, '*.json')))
+        print(f'Processing all {len(raw_files)} raw file(s)...')
+
     if not raw_files:
-        print('No raw files found in raw/')
+        print('No raw files to process')
         return
 
     print(f'Processing {len(raw_files)} raw file(s)...')
