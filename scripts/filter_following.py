@@ -193,11 +193,6 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
             skipped_reasons[handle] = 'no builder/founder signal in bio'
             continue
 
-        # Filter: must be in crypto/Web3 domain
-        if not is_web3(bio):
-            skipped_reasons[handle] = 'no crypto/web3 signal in bio'
-            continue
-
         # Filter: exclude signals
         excl, reason = should_exclude(bio)
         if excl:
