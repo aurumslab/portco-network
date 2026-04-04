@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 Auto-filter following lists and merge into contacts.json.
+Step 1: Keyword pre-filter (fast, free)
+Step 2: Claude AI judgment for remaining candidates
 Processes all JSON files in raw/ directory.
 Run from repo root: python scripts/filter_following.py
 """
@@ -8,8 +10,11 @@ Run from repo root: python scripts/filter_following.py
 import json
 import os
 import glob
-import re
 import sys
+import time
+import urllib.request
+import urllib.error
+from datetime import datetime, timezone, timedelta
 
 RAW_DIR = 'raw'
 CONTACTS_PATH = 'public/data/contacts.json'
@@ -17,94 +22,136 @@ CONTACTS_PATH = 'public/data/contacts.json'
 MIN_FOLLOWERS = 5000
 MAX_FOLLOWERS_HIGH_PROFILE = 500_000
 
-# Must have at least one builder keyword in bio
-BUILDER_KEYWORDS = [
-    'founder', 'co-founder', 'cofound', 'ceo', 'cto', 'coo', 'cso',
-    'engineer', 'developer', 'dev ', 'builder', 'building', 'protocol',
-    'started', 'launched', 'created', 'built ', 'core dev', 'core contributor',
-    'architect', 'scientist', 'researcher', 'head of', 'vp of', 'vp,',
-    'principal', 'product manager', 'pm @', 'pm,', 'technical lead',
-]
+ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
 
-# Exclude if bio contains any of these
+# ── Pre-filter: hard excludes (never pass to Claude) ──────────────────────────
+
 EXCLUDE_KEYWORDS = [
-    # VC / investor
     'managing partner', 'general partner', 'venture capital', 'investment fund',
     '@paradigm', '@a16z', '@multicoin', '@pantera', '@framework', '@syncracy',
-    '@dragonfly', '@polychain', 'fund manager', 'lp ', ' lp,', 'angel investor',
+    '@dragonfly', '@polychain', 'fund manager', 'angel investor',
     'investing in', 'portfolio companies',
-    # Trading / market maker
     'market maker', 'market making', 'quant trader', 'trading firm',
-    'prop trading', 'hft', 'high frequency', 'market microstructure',
-    # Marketing / community / KOL
-    'community manager', 'head of community', 'kol ', '\u2022 kol', 'biggest kol',
-    'ambassador @', '★ ambassador', 'influencer', 'content creator',
-    'growth strategist', 'growth hacker', 'marketing officer', 'chief marketing',
+    'prop trading', 'hft', 'high frequency',
+    'community manager', 'head of community', 'biggest kol',
+    'ambassador @', 'influencer', 'content creator',
+    'growth strategist', 'growth hacker', 'chief marketing officer',
     '/cmo', 'cmo @', 'cmo of', 'social media manager',
-    'brand strategist', 'pr manager', 'public relations', 'comms @',
-    # Media / analyst
-    'journalist', 'crypto analyst', 'columnist', 'newsletter',
-    # Exchanges (major)
+    'brand strategist', 'pr manager', 'public relations',
+    'journalist', 'columnist',
     'ceo of binance', 'founder of binance', 'ceo of coinbase', 'founder of coinbase',
 ]
 
-# Org / project account signals (not an individual person)
 ORG_SIGNALS = [
     'we are building', 'we build', 'join our', 'join us at',
     'our mission', 'built by the team', 'mint live', 'apply now',
-    'a defi-centric team', 'the leading', 'the first ', 'official account',
-    'backed by tier', 'community-built', 'community-led',
-    'education and community', 'on a mission to',
+    'a defi-centric team', 'community-built', 'community-led',
+    'official account', 'on a mission to',
 ]
 
-# High-profile projects to exclude (founders too well-known for warm intro)
-HIGH_PROFILE_EXCLUDE = [
-    'ethereum', 'solana', 'polygon', 'near protocol', 'avalanche', 'cardano',
+HIGH_PROFILE_PROJECTS = [
     'uniswap', 'aave', 'makerdao', 'compound finance', 'curve finance',
     'chainlink', 'binance', 'coinbase', 'ftx',
 ]
 
-
-WEB3_KEYWORDS = [
-    'crypto', 'web3', 'web 3', 'blockchain', 'defi', 'nft', 'dao',
-    'ethereum', 'solana', 'bitcoin', 'layer 2', 'l2', 'layer2',
-    'protocol', 'onchain', 'on-chain', 'on chain', 'token', 'wallet',
-    'dapp', 'decentralized', 'decentralised', 'smart contract',
-    'zk', 'zero knowledge', 'rollup', 'consensus', 'validator',
-    'staking', 'yield', 'liquidity', 'dex', 'cex', 'perp',
-    'cosmos', 'polkadot', 'avalanche', 'aptos', 'sui', 'monad',
-    'solidity', 'rust', 'move ', 'foundry', 'hardhat',
-    'paradigm', 'a16z crypto', 'multicoin', 'binance', 'coinbase',
-    'sequoia crypto', 'dragonfly', 'polychain',
+# Must have at least one of these to even reach Claude
+BUILDER_KEYWORDS = [
+    'founder', 'co-founder', 'cofound', 'ceo', 'cto', 'coo',
+    'engineer', 'developer', 'builder', 'building', 'protocol',
+    'architect', 'scientist', 'researcher', 'head of', 'technical lead',
 ]
 
 
-def is_builder(bio: str) -> bool:
+def hard_exclude(bio: str, followers: int) -> tuple[bool, str]:
     b = bio.lower()
-    return any(k in b for k in BUILDER_KEYWORDS)
-
-
-def is_web3(bio: str) -> bool:
-    b = bio.lower()
-    return any(k in b for k in WEB3_KEYWORDS)
-
-
-def should_exclude(bio: str) -> tuple[bool, str]:
-    b = bio.lower()
+    if followers > MAX_FOLLOWERS_HIGH_PROFILE:
+        return True, f'too high-profile ({followers:,} followers)'
+    for k in HIGH_PROFILE_PROJECTS:
+        if k in b:
+            return True, f'high-profile project: {k}'
     for k in EXCLUDE_KEYWORDS:
         if k in b:
-            return True, f'bio contains excluded keyword: "{k}"'
+            return True, f'excluded keyword: "{k}"'
     for k in ORG_SIGNALS:
         if k in b:
             return True, f'org account signal: "{k}"'
+    if not any(k in b for k in BUILDER_KEYWORDS):
+        return True, 'no builder/founder signal in bio'
     return False, ''
 
 
-def is_high_profile(bio: str, followers: int) -> bool:
-    if followers > MAX_FOLLOWERS_HIGH_PROFILE:
-        return True
-    b = bio.lower()
-    return any(k in b for k in HIGH_PROFILE_EXCLUDE)
+# ── Claude judgment ───────────────────────────────────────────────────────────
+
+CLAUDE_SYSTEM = """You are filtering a list of Twitter/X accounts to find crypto/Web3 founders and operators worth a warm introduction.
+
+INCLUDE if ALL of:
+- Individual person (not a project/org/DAO account)
+- Active founder, co-founder, CEO, or CTO of a crypto/Web3 startup or protocol
+- Project is crypto/Web3 domain (blockchain, DeFi, NFT, L1/L2, wallet, infra, etc.)
+- Not too high-profile for a warm intro (not Vitalik, not Solana co-founder, etc.)
+
+EXCLUDE if ANY of:
+- VC / investor (even if they were formerly a founder)
+- Trading firm / market maker
+- Exchange CEO/founder of a major exchange
+- Content creator, influencer, analyst, KOL
+- Community/marketing/growth role without technical founder role
+- Org/project official account
+- Non-crypto domain (AI-only, biotech, fintech without blockchain, etc.)
+- Insufficient info to verify — default to exclude
+
+Respond with JSON only: {"include": true/false, "reason": "one sentence"}"""
+
+
+def ask_claude(handle: str, name: str, bio: str, followers: int) -> tuple[bool, str]:
+    if not ANTHROPIC_API_KEY:
+        # No API key — default include if passed keyword filter
+        return True, 'No API key — passed keyword filter'
+
+    prompt = f"""Handle: @{handle}
+Name: {name}
+Bio: {bio}
+Followers: {followers:,}
+
+Should this person be included in the warm intro contact pool?"""
+
+    payload = json.dumps({
+        'model': 'claude-haiku-4-5-20251001',
+        'max_tokens': 100,
+        'system': CLAUDE_SYSTEM,
+        'messages': [{'role': 'user', 'content': prompt}],
+    }).encode()
+
+    req = urllib.request.Request(
+        'https://api.anthropic.com/v1/messages',
+        data=payload,
+        headers={
+            'x-api-key': ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01',
+            'content-type': 'application/json',
+        },
+    )
+
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                result = json.loads(resp.read())
+                text = result['content'][0]['text'].strip()
+                # Parse JSON from response
+                parsed = json.loads(text)
+                return parsed.get('include', False), parsed.get('reason', '')
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                time.sleep(10 * (attempt + 1))
+                continue
+            body = e.read().decode()
+            print(f'    Claude API error {e.code}: {body[:200]}')
+            return True, f'API error {e.code} — passed keyword filter'
+        except Exception as ex:
+            print(f'    Claude error: {ex}')
+            return True, f'API error — passed keyword filter'
+
+    return True, 'Rate limited — passed keyword filter'
 
 
 def infer_role(bio: str) -> str:
@@ -121,7 +168,7 @@ def infer_role(bio: str) -> str:
         return 'CEO'
     if 'cto' in b:
         return 'CTO'
-    if 'engineer' in b or 'developer' in b or 'dev ' in b:
+    if 'engineer' in b or 'developer' in b:
         return 'Founder / Builder'
     if 'builder' in b or 'building' in b:
         return 'Founder / Builder'
@@ -132,22 +179,21 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
     with open(raw_path, encoding='utf-8') as f:
         raw = json.load(f)
 
-    # Support wrapped format {source_founder, source_company, following:[...]}
-    # or plain array [{handle, name, followers, bio, x_url}]
     if isinstance(raw, dict):
         source_founder = raw.get('source_founder', 'Unknown')
         source_company = raw.get('source_company', 'Unknown')
         following = raw.get('following', [])
     else:
         following = raw
-        # Try to infer from filename: raw/following-{founder}-{company}-*.json
         base = os.path.basename(raw_path).replace('.json', '')
         parts = base.split('-')
         source_founder = parts[1] if len(parts) > 1 else 'Unknown'
         source_company = parts[2] if len(parts) > 2 else 'Unknown'
 
     added = []
-    skipped_reasons = {}
+    skipped = 0
+    claude_calls = 0
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
 
     for person in following:
         handle = (person.get('handle') or person.get('username') or person.get('screen_name') or '').strip()
@@ -156,7 +202,7 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
 
         handle_lower = handle.lower()
         if handle_lower in existing_handles:
-            skipped_reasons[handle] = 'already in contacts'
+            skipped += 1
             continue
 
         followers = (
@@ -170,34 +216,22 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
         x_url = person.get('x_url') or f'https://x.com/{handle}'
         last_tweet_at = person.get('last_tweet_at') or None
 
-        # Filter: inactive (no tweet in 30 days) — only if data is available
-        if last_tweet_at is not None:
-            from datetime import datetime, timezone, timedelta
-            cutoff = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
-            if last_tweet_at < cutoff:
-                skipped_reasons[handle] = f'inactive (last tweet {last_tweet_at[:10]})'
-                continue
-
-        # Filter: followers
+        # Hard filters (no API call needed)
+        if last_tweet_at and last_tweet_at < cutoff:
+            skipped += 1
+            continue
         if followers < MIN_FOLLOWERS:
-            skipped_reasons[handle] = f'<{MIN_FOLLOWERS} followers ({followers})'
+            skipped += 1
             continue
-
-        # Filter: high-profile
-        if is_high_profile(bio, followers):
-            skipped_reasons[handle] = f'high-profile (>{MAX_FOLLOWERS_HIGH_PROFILE} followers or major protocol founder)'
-            continue
-
-        # Filter: must be builder
-        if not is_builder(bio):
-            skipped_reasons[handle] = 'no builder/founder signal in bio'
-            continue
-
-        # Filter: exclude signals
-        excl, reason = should_exclude(bio)
+        excl, reason = hard_exclude(bio, followers)
         if excl:
-            skipped_reasons[handle] = reason
+            skipped += 1
             continue
+
+        # Claude judgment
+        include, reason = ask_claude(handle, name, bio, followers)
+        claude_calls += 1
+        print(f'  Claude @{handle}: {"✓" if include else "✗"} — {reason}')
 
         role = infer_role(bio)
         notes = f'{bio} — {followers:,} followers' if bio else f'{followers:,} followers'
@@ -211,31 +245,35 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
             'role': role,
             'project': '',
             'notes': notes,
-            'include': True,
-            'status': 'Auto-filtered',
+            'include': include,
+            'status': 'AI-filtered' if include else f'Excluded — {reason}',
         }
         added.append(entry)
-        existing_handles.add(handle_lower)
+        if include:
+            existing_handles.add(handle_lower)
 
-    print(f'  {os.path.basename(raw_path)}: {len(added)} added, {len(skipped_reasons)} skipped')
+    included = sum(1 for e in added if e['include'])
+    print(f'  {os.path.basename(raw_path)}: {included} included, {len(added)-included} excluded by Claude, {skipped} pre-filtered ({claude_calls} Claude calls)')
     return added
 
 
 def main():
-    # Load existing contacts
     with open(CONTACTS_PATH, encoding='utf-8') as f:
         contacts = json.load(f)
 
     existing_handles = {(c.get('x_handle') or '').lower() for c in contacts if c.get('x_handle')}
-    print(f'Existing contacts: {len(contacts)} ({len(existing_handles)} with handles)')
+    print(f'Existing contacts: {len(contacts)}')
 
-    # Find all raw files
     raw_files = sorted(glob.glob(os.path.join(RAW_DIR, '*.json')))
     if not raw_files:
         print('No raw files found in raw/')
         return
 
     print(f'Processing {len(raw_files)} raw file(s)...')
+    if ANTHROPIC_API_KEY:
+        print('Claude API: enabled (claude-haiku-4-5)')
+    else:
+        print('Claude API: disabled (no ANTHROPIC_API_KEY)')
 
     total_added = 0
     for raw_path in raw_files:
@@ -243,7 +281,7 @@ def main():
         contacts.extend(new_entries)
         total_added += len(new_entries)
 
-    print(f'\nTotal added: {total_added}')
+    print(f'\nTotal new entries: {total_added}')
     print(f'New contacts.json size: {len(contacts)}')
 
     with open(CONTACTS_PATH, 'w', encoding='utf-8') as f:
