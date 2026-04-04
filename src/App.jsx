@@ -163,7 +163,7 @@ function FounderRow({ founder, counts, selected, onClick }) {
 
 // ── Main App ───────────────────────────────────────────────────────────────
 export default function App() {
-  const { pollWorkflow } = useGitHub()
+  const { pollWorkflow, getFileContent } = useGitHub()
   const [foundersRaw, setFoundersRaw] = useState([])
   const [contactsRaw, setContactsRaw] = useState([])
   const [loading, setLoading] = useState(true)
@@ -545,8 +545,11 @@ export default function App() {
               setWorkflowResult(result)
               setWorkflowStatus('completed')
               if (result === 'success') {
-                const base = import.meta.env.BASE_URL
-                fetch(`${base}data/contacts.json?t=${Date.now()}`).then(r => r.json()).then(setContactsRaw)
+                getFileContent('public/data/contacts.json').then(setContactsRaw).catch(() => {
+                  // fallback to Pages URL if GitHub API fails
+                  const base = import.meta.env.BASE_URL
+                  fetch(`${base}data/contacts.json?t=${Date.now()}`).then(r => r.json()).then(setContactsRaw)
+                })
               }
             })
           }}

@@ -112,5 +112,10 @@ export function useGitHub() {
     return 'timeout'
   }
 
-  return { isConfigured, appendEntry, uploadRawFile, pollWorkflow }
+  async function getFileContent(path) {
+    const file = await getFile(path)
+    return JSON.parse(decode(file.content))
+  }
+
+  return { isConfigured, appendEntry, uploadRawFile, pollWorkflow, getFileContent }
 }
