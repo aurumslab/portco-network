@@ -21,7 +21,7 @@ function Field({ label, value, onChange, placeholder, required }) {
 }
 
 export default function UploadFollowingModal({ onClose, onUploaded }) {
-  const { uploadRawFile, isConfigured } = useGitHub()
+  const { uploadRawFile, isConfigured, listDir, deleteFile } = useGitHub()
   const [founder, setFounder] = useState('')
   const [company, setCompany] = useState('')
   const [file, setFile] = useState(null)
@@ -79,8 +79,15 @@ export default function UploadFollowingModal({ onClose, onUploaded }) {
       const slug = founder.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       const ts = Date.now()
       const path = `raw/following-${slug}-${ts}.json`
-      const uploadedAt = Date.now()
 
+      // Delete old files with the same founder slug
+      const existing = await listDir('raw')
+      const oldFiles = existing.filter(f => f.name.startsWith(`following-${slug}-`) && f.name.endsWith('.json'))
+      for (const f of oldFiles) {
+        await deleteFile(f.path, f.sha, `Replace old following list for ${founder.trim()}`)
+      }
+
+      const uploadedAt = Date.now()
       await uploadRawFile(
         path,
         JSON.stringify(wrapped, null, 2),

@@ -55,6 +55,28 @@ export function useGitHub() {
     return res.json()
   }
 
+  async function listDir(path) {
+    const { token, owner, repo } = getConfig()
+    const res = await fetch(`${BASE}/repos/${owner}/${repo}/contents/${path}`, {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+    })
+    if (!res.ok) return []
+    return res.json()
+  }
+
+  async function deleteFile(path, sha, message) {
+    const { token, owner, repo } = getConfig()
+    await fetch(`${BASE}/repos/${owner}/${repo}/contents/${path}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message, sha }),
+    })
+  }
+
   async function uploadRawFile(path, content, message) {
     const { token, owner, repo } = getConfig()
     const res = await fetch(`${BASE}/repos/${owner}/${repo}/contents/${path}`, {
@@ -135,5 +157,5 @@ export function useGitHub() {
     return JSON.parse(decode(file.content))
   }
 
-  return { isConfigured, appendEntry, uploadRawFile, pollWorkflow, getFileContent }
+  return { isConfigured, appendEntry, uploadRawFile, pollWorkflow, getFileContent, listDir, deleteFile }
 }
