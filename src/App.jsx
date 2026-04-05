@@ -89,10 +89,22 @@ function ContactCard({ contact, onToggle }) {
 
       {/* Meta row */}
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-xs text-gray-600">
-          via <span className="text-gray-400">{contact.source_founder}</span>
-          <span className="text-gray-600"> · {contact.source_company}</span>
-        </span>
+        {/* Sources */}
+        {contact.sources && contact.sources.length > 1 ? (
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-violet-500/15 text-violet-400 border border-violet-500/25">
+              ×{contact.sources.length} founders
+            </span>
+            <span className="text-xs text-gray-500">
+              {contact.sources.map(s => s.founder).join(' · ')}
+            </span>
+          </div>
+        ) : (
+          <span className="text-xs text-gray-600">
+            via <span className="text-gray-400">{contact.source_founder}</span>
+            <span className="text-gray-600"> · {contact.source_company}</span>
+          </span>
+        )}
 
         {contact.x_handle ? (
           <a
@@ -186,6 +198,7 @@ export default function App() {
   })
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState('all') // all | included | excluded
+  const [sortBy, setSortBy] = useState('default') // default | overlap
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact' | 'upload'
   const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders'
@@ -207,7 +220,7 @@ export default function App() {
   // Filtered contacts for main view
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim()
-    return contacts.filter(c => {
+    const result = contacts.filter(c => {
       if (selectedCompany && c.source_company !== selectedCompany) return false
       if (filterStatus === 'included' && !c.include) return false
       if (filterStatus === 'excluded' && c.include) return false
@@ -222,7 +235,11 @@ export default function App() {
         c.notes?.toLowerCase().includes(q)
       )
     })
-  }, [contacts, search, filterStatus, selectedCompany])
+    if (sortBy === 'overlap') {
+      result.sort((a, b) => (b.sources?.length || 1) - (a.sources?.length || 1))
+    }
+    return result
+  }, [contacts, search, filterStatus, selectedCompany, sortBy])
 
   // Per-company counts for sidebar
   const countsByCompany = useMemo(() => {
@@ -483,6 +500,17 @@ export default function App() {
                     </button>
                   ))}
                 </div>
+                <button
+                  onClick={() => setSortBy(s => s === 'overlap' ? 'default' : 'overlap')}
+                  className={`text-xs px-3 py-2 rounded-lg border font-medium transition-all ${
+                    sortBy === 'overlap'
+                      ? 'bg-violet-600/20 border-violet-500/40 text-violet-400'
+                      : 'bg-gray-900 border-gray-700 text-gray-500 hover:text-gray-300 hover:border-gray-600'
+                  }`}
+                  title="Sort by number of founders who follow this person"
+                >
+                  ×N overlap
+                </button>
               </div>
 
               <p className="text-xs text-gray-600 mb-4">

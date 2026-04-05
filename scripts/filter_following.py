@@ -212,6 +212,7 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
         role = infer_role(bio)
         notes = f'{bio} — {followers:,} followers' if bio else f'{followers:,} followers'
 
+        new_source = {'founder': source_founder, 'company': source_company}
         entry = {
             'source_founder': source_founder,
             'source_company': source_company,
@@ -223,6 +224,7 @@ def process_raw_file(raw_path: str, existing_handles: set) -> list:
             'notes': notes,
             'include': include,
             'status': 'AI-filtered' if include else f'Excluded — {reason}',
+            'sources': [new_source],
         }
         added.append(entry)
         if include:
@@ -259,11 +261,27 @@ def main():
     else:
         print('Claude API: disabled (no ANTHROPIC_API_KEY)')
 
+    # Build handle -> index map for merging sources
+    handle_index = {(c.get('x_handle') or '').lower(): i for i, c in enumerate(contacts) if c.get('x_handle')}
+
     total_added = 0
     for raw_path in raw_files:
         new_entries = process_raw_file(raw_path, existing_handles)
-        contacts.extend(new_entries)
-        total_added += len(new_entries)
+        for entry in new_entries:
+            h = (entry.get('x_handle') or '').lower()
+            if h and h in handle_index:
+                # Merge sources into existing entry
+                existing = contacts[handle_index[h]]
+                existing_sources = existing.get('sources', [{'founder': existing.get('source_founder',''), 'company': existing.get('source_company','')}])
+                new_source = entry['sources'][0]
+                if new_source not in existing_sources:
+                    existing_sources.append(new_source)
+                existing['sources'] = existing_sources
+            else:
+                contacts.append(entry)
+                if h:
+                    handle_index[h] = len(contacts) - 1
+                total_added += 1
 
     print(f'\nTotal new entries: {total_added}')
     print(f'New contacts.json size: {len(contacts)}')
