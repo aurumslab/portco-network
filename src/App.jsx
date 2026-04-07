@@ -3,6 +3,7 @@ import SettingsModal from './components/SettingsModal.jsx'
 import AddFounderModal from './components/AddFounderModal.jsx'
 import AddContactModal from './components/AddContactModal.jsx'
 import UploadFollowingModal from './components/UploadFollowingModal.jsx'
+import CalendarView from './components/CalendarView.jsx'
 import { useGitHub } from './hooks/useGitHub.js'
 
 const STORAGE_KEY = 'contact_pool_overrides'
@@ -201,7 +202,7 @@ export default function App() {
   const [sortBy, setSortBy] = useState('default') // default | overlap
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [activeModal, setActiveModal] = useState(null) // 'settings' | 'addFounder' | 'addContact' | 'upload'
-  const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders'
+  const [mainView, setMainView] = useState('contacts') // 'contacts' | 'founders' | 'calendar'
   const [workflowStatus, setWorkflowStatus] = useState(null) // null | 'queued' | 'in_progress' | 'completed'
   const [workflowResult, setWorkflowResult] = useState(null) // null | 'success' | 'failure' | 'timeout'
   const pollAbortRef = useRef(null)
@@ -416,7 +417,7 @@ export default function App() {
           {/* View tabs */}
           <div className="flex items-center gap-2 mb-4">
             <div className="flex rounded-lg border border-gray-700 overflow-hidden text-xs">
-              {[{ value: 'contacts', label: 'Contacts' }, { value: 'founders', label: 'Founders' }].map(({ value, label }) => (
+              {[{ value: 'contacts', label: 'Contacts' }, { value: 'founders', label: 'Founders' }, { value: 'calendar', label: 'Outreach' }].map(({ value, label }) => (
                 <button
                   key={value}
                   onClick={() => setMainView(value)}
@@ -432,7 +433,10 @@ export default function App() {
             </div>
           </div>
 
-          {mainView === 'founders' ? (
+          {mainView === 'calendar' ? (
+            /* ── Calendar / Outreach view ── */
+            <CalendarView contacts={contacts} />
+          ) : mainView === 'founders' ? (
             /* ── Founders view ── */
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               {foundersRaw.map(f => {
