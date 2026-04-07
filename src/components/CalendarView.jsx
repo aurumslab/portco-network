@@ -2,70 +2,69 @@ import { useState, useMemo } from 'react'
 
 const STORAGE_KEY = 'outreach_calendar'
 
-function getWeekKey(date) {
-  // Returns ISO week start (Monday) as YYYY-MM-DD
-  const d = new Date(date)
-  const day = d.getDay()
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
-  const monday = new Date(d.setDate(diff))
-  return monday.toISOString().slice(0, 10)
-}
-
-function getWeekLabel(weekKey) {
-  const monday = new Date(weekKey)
-  const sunday = new Date(monday)
-  sunday.setDate(monday.getDate() + 6)
-  const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  return `${fmt(monday)} – ${fmt(sunday)}`
-}
-
-function getWeeksAround(centerDate, count = 8) {
-  const weeks = []
-  const start = new Date(centerDate)
-  start.setDate(start.getDate() - (count / 2) * 7)
-  for (let i = 0; i < count; i++) {
-    const d = new Date(start)
-    d.setDate(start.getDate() + i * 7)
-    weeks.push(getWeekKey(d))
-  }
-  return weeks
-}
-
+// Each entry keyed by YYYY-MM-DD (the specific day)
 const STATUS_OPTIONS = [
-  { value: 'planned', label: 'Planned', color: 'text-gray-400 border-gray-700 bg-gray-800/50' },
-  { value: 'contacted', label: 'Contacted', color: 'text-blue-400 border-blue-800/60 bg-blue-950/30' },
-  { value: 'replied', label: 'Replied', color: 'text-emerald-400 border-emerald-800/60 bg-emerald-950/30' },
-  { value: 'meeting', label: 'Meeting Set', color: 'text-violet-400 border-violet-800/60 bg-violet-950/30' },
-  { value: 'pass', label: 'Pass', color: 'text-gray-600 border-gray-800 bg-transparent' },
+  { value: 'planned',   label: 'Planned',     dot: 'bg-gray-500' },
+  { value: 'contacted', label: 'Contacted',   dot: 'bg-blue-400' },
+  { value: 'replied',   label: 'Replied',     dot: 'bg-emerald-400' },
+  { value: 'meeting',   label: 'Meeting Set', dot: 'bg-violet-400' },
+  { value: 'pass',      label: 'Pass',        dot: 'bg-gray-700' },
 ]
 
-function statusStyle(value) {
-  return STATUS_OPTIONS.find(s => s.value === value)?.color || STATUS_OPTIONS[0].color
+const STATUS_STYLE = {
+  planned:   'text-gray-400 border-gray-700 bg-gray-800/50',
+  contacted: 'text-blue-400 border-blue-800/60 bg-blue-950/30',
+  replied:   'text-emerald-400 border-emerald-800/60 bg-emerald-950/30',
+  meeting:   'text-violet-400 border-violet-800/60 bg-violet-950/30',
+  pass:      'text-gray-600 border-gray-800 bg-transparent',
 }
 
-function AddContactSheet({ contacts, onAdd, onClose }) {
+const DOT_COLOR = {
+  planned: 'bg-gray-500',
+  contacted: 'bg-blue-400',
+  replied: 'bg-emerald-400',
+  meeting: 'bg-violet-400',
+  pass: 'bg-gray-700',
+}
+
+function toDateKey(date) {
+  return date.toISOString().slice(0, 10)
+}
+
+function getDaysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+function getFirstDayOfWeek(year, month) {
+  // 0=Sun, adjust to Mon=0
+  const day = new Date(year, month, 1).getDay()
+  return (day + 6) % 7
+}
+
+// ── Add contact sheet ─────────────────────────────────────────────────────────
+function AddContactSheet({ contacts, dateKey, onAdd, onClose }) {
   const [search, setSearch] = useState('')
   const filtered = useMemo(() => {
     const q = search.toLowerCase()
-    if (!q) return contacts.slice(0, 30)
+    if (!q) return contacts.slice(0, 40)
     return contacts.filter(c =>
       c.contact_name?.toLowerCase().includes(q) ||
       c.x_handle?.toLowerCase().includes(q) ||
       c.role?.toLowerCase().includes(q) ||
       c.source_company?.toLowerCase().includes(q)
-    ).slice(0, 30)
+    ).slice(0, 40)
   }, [contacts, search])
+
+  const fmt = d => new Date(d + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
-      <div
-        className="w-full sm:max-w-md bg-gray-900 border border-gray-700 rounded-t-2xl sm:rounded-2xl p-5 max-h-[80vh] flex flex-col"
-        onClick={e => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-white">Add to this week</h3>
+      <div className="w-full sm:max-w-md bg-gray-900 border border-gray-700 rounded-t-2xl sm:rounded-2xl p-5 max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="text-sm font-semibold text-white">Add contact</h3>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-300 text-lg leading-none">×</button>
         </div>
+        <p className="text-xs text-gray-500 mb-3">{fmt(dateKey)}</p>
         <input
           autoFocus
           type="text"
@@ -74,10 +73,8 @@ function AddContactSheet({ contacts, onAdd, onClose }) {
           placeholder="Search contacts..."
           className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-violet-500 mb-3"
         />
-        <div className="overflow-y-auto flex-1 space-y-1">
-          {filtered.length === 0 && (
-            <p className="text-xs text-gray-600 text-center py-4">No contacts found</p>
-          )}
+        <div className="overflow-y-auto flex-1 space-y-0.5">
+          {filtered.length === 0 && <p className="text-xs text-gray-600 text-center py-4">No contacts found</p>}
           {filtered.map(c => (
             <button
               key={c.x_handle || c.contact_name}
@@ -89,9 +86,7 @@ function AddContactSheet({ contacts, onAdd, onClose }) {
                 <p className="text-xs text-gray-500 truncate">{c.role} · {c.source_company}</p>
               </div>
               {c.sources?.length > 1 && (
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/25 shrink-0">
-                  ×{c.sources.length}
-                </span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/25 shrink-0">×{c.sources.length}</span>
               )}
             </button>
           ))}
@@ -101,207 +96,248 @@ function AddContactSheet({ contacts, onAdd, onClose }) {
   )
 }
 
-function ContactItem({ item, onStatusChange, onRemove, onNoteChange }) {
-  const [editingNote, setEditingNote] = useState(false)
-  const [note, setNote] = useState(item.note || '')
+// ── Day detail panel ──────────────────────────────────────────────────────────
+function DayPanel({ dateKey, items, onStatusChange, onNoteChange, onRemove, onAddClick, onClose }) {
+  const fmt = d => new Date(d + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+  const [editingNoteIdx, setEditingNoteIdx] = useState(null)
+  const [noteVal, setNoteVal] = useState('')
 
   return (
-    <div className="flex items-start gap-3 py-2.5 border-b border-gray-800/60 last:border-0 group">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-medium text-white">{item.contact_name}</span>
-          {item.x_handle && (
-            <a
-              href={`https://x.com/${item.x_handle}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-sky-400 hover:text-sky-300"
-            >
-              @{item.x_handle}
-            </a>
-          )}
-          {item.sources?.length > 1 && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/25">
-              ×{item.sources.length} founders
-            </span>
-          )}
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div className="w-full sm:max-w-lg bg-gray-900 border border-gray-700 rounded-t-2xl sm:rounded-2xl p-5 max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-sm font-semibold text-white">{fmt(dateKey)}</h3>
+            <p className="text-xs text-gray-500 mt-0.5">{items.length} contact{items.length !== 1 ? 's' : ''}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={onAddClick} className="text-xs px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-medium transition-all">+ Add</button>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-300 text-lg leading-none">×</button>
+          </div>
         </div>
-        <p className="text-xs text-gray-500 mt-0.5">{item.role} · {item.source_company}</p>
-        {editingNote ? (
-          <div className="mt-1.5 flex gap-2">
-            <input
-              autoFocus
-              value={note}
-              onChange={e => setNote(e.target.value)}
-              onBlur={() => { setEditingNote(false); onNoteChange(note) }}
-              onKeyDown={e => { if (e.key === 'Enter') { setEditingNote(false); onNoteChange(note) } }}
-              placeholder="Add note..."
-              className="flex-1 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-100 focus:outline-none focus:border-violet-500"
-            />
+
+        {items.length === 0 ? (
+          <div className="text-center py-8 text-gray-700">
+            <p className="text-sm">No contacts for this day</p>
+            <p className="text-xs mt-1">Click "+ Add" to schedule someone</p>
           </div>
         ) : (
-          <button
-            onClick={() => setEditingNote(true)}
-            className="mt-1 text-xs text-gray-700 hover:text-gray-400 transition-colors"
-          >
-            {note || '+ add note'}
-          </button>
+          <div className="overflow-y-auto flex-1 space-y-0">
+            {items.map((item, idx) => (
+              <div key={(item.x_handle || item.contact_name) + idx} className="flex items-start gap-3 py-3 border-b border-gray-800/60 last:border-0 group">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-medium text-white">{item.contact_name}</span>
+                    {item.x_handle && (
+                      <a href={`https://x.com/${item.x_handle}`} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-400 hover:text-sky-300">@{item.x_handle}</a>
+                    )}
+                    {item.sources?.length > 1 && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-violet-500/15 text-violet-400 border border-violet-500/25">×{item.sources.length} founders</span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-0.5">{item.role} · {item.source_company}</p>
+                  {editingNoteIdx === idx ? (
+                    <input
+                      autoFocus
+                      value={noteVal}
+                      onChange={e => setNoteVal(e.target.value)}
+                      onBlur={() => { setEditingNoteIdx(null); onNoteChange(idx, noteVal) }}
+                      onKeyDown={e => { if (e.key === 'Enter') { setEditingNoteIdx(null); onNoteChange(idx, noteVal) } }}
+                      placeholder="Add note..."
+                      className="mt-1.5 w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded text-xs text-gray-100 focus:outline-none focus:border-violet-500"
+                    />
+                  ) : (
+                    <button onClick={() => { setEditingNoteIdx(idx); setNoteVal(item.note || '') }} className="mt-1 text-xs text-gray-700 hover:text-gray-400 transition-colors">
+                      {item.note || '+ add note'}
+                    </button>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <select
+                    value={item.status || 'planned'}
+                    onChange={e => onStatusChange(idx, e.target.value)}
+                    className={`text-xs px-2 py-1 rounded-lg border bg-transparent focus:outline-none cursor-pointer ${STATUS_STYLE[item.status || 'planned']}`}
+                  >
+                    {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value} className="bg-gray-900 text-gray-200">{s.label}</option>)}
+                  </select>
+                  <button onClick={() => onRemove(idx)} className="opacity-0 group-hover:opacity-100 text-gray-700 hover:text-red-400 transition-all text-sm">×</button>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
-      </div>
-      <div className="flex items-center gap-2 shrink-0">
-        <select
-          value={item.status || 'planned'}
-          onChange={e => onStatusChange(e.target.value)}
-          className={`text-xs px-2 py-1 rounded-lg border bg-transparent focus:outline-none cursor-pointer ${statusStyle(item.status || 'planned')}`}
-        >
-          {STATUS_OPTIONS.map(s => (
-            <option key={s.value} value={s.value} className="bg-gray-900 text-gray-200">{s.label}</option>
-          ))}
-        </select>
-        <button
-          onClick={onRemove}
-          className="opacity-0 group-hover:opacity-100 text-gray-700 hover:text-red-400 transition-all text-sm leading-none"
-        >×</button>
       </div>
     </div>
   )
 }
 
+// ── Main calendar ─────────────────────────────────────────────────────────────
 export default function CalendarView({ contacts }) {
   const today = new Date()
-  const currentWeek = getWeekKey(today)
-  const [selectedWeek, setSelectedWeek] = useState(currentWeek)
-  const [showAddSheet, setShowAddSheet] = useState(false)
+  const [viewYear, setViewYear] = useState(today.getFullYear())
+  const [viewMonth, setViewMonth] = useState(today.getMonth())
+  const [selectedDate, setSelectedDate] = useState(null) // YYYY-MM-DD
+  const [addingToDate, setAddingToDate] = useState(null)
   const [calendar, setCalendar] = useState(() => {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') }
     catch { return {} }
   })
 
-  const weeks = useMemo(() => getWeeksAround(today, 12), [])
-
-  const weekItems = calendar[selectedWeek] || []
-
-  function save(newCal) {
-    setCalendar(newCal)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newCal))
-  }
-
-  function addContact(contact) {
-    const existing = calendar[selectedWeek] || []
-    const key = contact.x_handle || contact.contact_name
-    if (existing.find(i => (i.x_handle || i.contact_name) === key)) return
-    save({
-      ...calendar,
-      [selectedWeek]: [...existing, { ...contact, status: 'planned', note: '' }],
-    })
-  }
-
-  function updateStatus(idx, status) {
-    const items = [...(calendar[selectedWeek] || [])]
-    items[idx] = { ...items[idx], status }
-    save({ ...calendar, [selectedWeek]: items })
-  }
-
-  function updateNote(idx, note) {
-    const items = [...(calendar[selectedWeek] || [])]
-    items[idx] = { ...items[idx], note }
-    save({ ...calendar, [selectedWeek]: items })
-  }
-
-  function removeContact(idx) {
-    const items = (calendar[selectedWeek] || []).filter((_, i) => i !== idx)
-    save({ ...calendar, [selectedWeek]: items })
-  }
+  const todayKey = toDateKey(today)
 
   const includedContacts = useMemo(() =>
     contacts.filter(c => c.include).sort((a, b) => (b.sources?.length || 1) - (a.sources?.length || 1)),
     [contacts]
   )
 
+  function save(newCal) {
+    setCalendar(newCal)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newCal))
+  }
+
+  function addContact(dateKey, contact) {
+    const existing = calendar[dateKey] || []
+    const key = contact.x_handle || contact.contact_name
+    if (existing.find(i => (i.x_handle || i.contact_name) === key)) return
+    save({ ...calendar, [dateKey]: [...existing, { ...contact, status: 'planned', note: '' }] })
+  }
+
+  function updateStatus(dateKey, idx, status) {
+    const items = [...(calendar[dateKey] || [])]
+    items[idx] = { ...items[idx], status }
+    save({ ...calendar, [dateKey]: items })
+  }
+
+  function updateNote(dateKey, idx, note) {
+    const items = [...(calendar[dateKey] || [])]
+    items[idx] = { ...items[idx], note }
+    save({ ...calendar, [dateKey]: items })
+  }
+
+  function removeContact(dateKey, idx) {
+    const items = (calendar[dateKey] || []).filter((_, i) => i !== idx)
+    save({ ...calendar, [dateKey]: items })
+  }
+
+  function prevMonth() {
+    if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11) }
+    else setViewMonth(m => m - 1)
+  }
+
+  function nextMonth() {
+    if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0) }
+    else setViewMonth(m => m + 1)
+  }
+
+  const monthName = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+  const daysInMonth = getDaysInMonth(viewYear, viewMonth)
+  const firstDow = getFirstDayOfWeek(viewYear, viewMonth) // 0=Mon
+
+  const days = []
+  // Leading empty cells
+  for (let i = 0; i < firstDow; i++) days.push(null)
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+    days.push({ day: d, key })
+  }
+
+  const selectedItems = selectedDate ? (calendar[selectedDate] || []) : []
+
   return (
-    <div className="max-w-2xl mx-auto">
-      {/* Week selector */}
-      <div className="flex gap-1.5 overflow-x-auto pb-2 mb-6 scrollbar-none">
-        {weeks.map(w => {
-          const isToday = w === currentWeek
-          const hasItems = (calendar[w] || []).length > 0
+    <div className="max-w-3xl mx-auto">
+      {/* Month nav */}
+      <div className="flex items-center justify-between mb-5">
+        <button onClick={prevMonth} className="p-1.5 rounded-lg text-gray-500 hover:text-gray-200 hover:bg-gray-800 transition-all">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <div className="flex items-center gap-3">
+          <h2 className="text-base font-semibold text-white">{monthName}</h2>
+          {(viewYear !== today.getFullYear() || viewMonth !== today.getMonth()) && (
+            <button onClick={() => { setViewYear(today.getFullYear()); setViewMonth(today.getMonth()) }} className="text-xs text-violet-400 hover:text-violet-300 transition-colors">
+              Today
+            </button>
+          )}
+        </div>
+        <button onClick={nextMonth} className="p-1.5 rounded-lg text-gray-500 hover:text-gray-200 hover:bg-gray-800 transition-all">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+
+      {/* Day-of-week headers */}
+      <div className="grid grid-cols-7 mb-1">
+        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+          <div key={d} className="text-center text-[10px] font-semibold text-gray-600 uppercase tracking-widest py-1">{d}</div>
+        ))}
+      </div>
+
+      {/* Calendar grid */}
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((cell, i) => {
+          if (!cell) return <div key={`empty-${i}`} />
+          const { day, key } = cell
+          const items = calendar[key] || []
+          const isToday = key === todayKey
+          const isSelected = key === selectedDate
+
           return (
             <button
-              key={w}
-              onClick={() => setSelectedWeek(w)}
-              className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
-                selectedWeek === w
-                  ? 'bg-violet-600 border-violet-500 text-white'
+              key={key}
+              onClick={() => setSelectedDate(isSelected ? null : key)}
+              className={`relative min-h-16 rounded-lg border p-1.5 text-left transition-all ${
+                isSelected
+                  ? 'border-violet-500 bg-violet-950/40'
                   : isToday
-                  ? 'border-violet-500/40 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20'
-                  : 'border-gray-700 text-gray-500 bg-gray-900 hover:bg-gray-800 hover:text-gray-300'
+                  ? 'border-violet-500/40 bg-violet-500/5 hover:bg-violet-500/10'
+                  : 'border-gray-800 bg-gray-900/50 hover:border-gray-700 hover:bg-gray-900'
               }`}
             >
-              {isToday && selectedWeek !== w ? '● ' : ''}{getWeekLabel(w)}
-              {hasItems && selectedWeek !== w && <span className="ml-1 opacity-60">·{(calendar[w] || []).length}</span>}
+              <span className={`text-xs font-medium ${isToday ? 'text-violet-400' : 'text-gray-400'}`}>{day}</span>
+              {items.length > 0 && (
+                <div className="mt-1 space-y-0.5">
+                  {items.slice(0, 3).map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-1 min-w-0">
+                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${DOT_COLOR[item.status || 'planned']}`} />
+                      <span className="text-[10px] text-gray-400 truncate leading-tight">{item.contact_name?.split(' ')[0]}</span>
+                    </div>
+                  ))}
+                  {items.length > 3 && <p className="text-[10px] text-gray-600">+{items.length - 3} more</p>}
+                </div>
+              )}
             </button>
           )
         })}
       </div>
 
-      {/* Week header */}
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h2 className="text-base font-semibold text-white">
-            {selectedWeek === currentWeek ? 'This Week' : getWeekLabel(selectedWeek)}
-          </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {weekItems.length === 0 ? 'No contacts scheduled' : `${weekItems.length} contact${weekItems.length !== 1 ? 's' : ''}`}
-            {weekItems.length > 0 && ` · ${weekItems.filter(i => i.status === 'contacted' || i.status === 'replied' || i.status === 'meeting').length} reached out`}
-          </p>
-        </div>
-        <button
-          onClick={() => setShowAddSheet(true)}
-          className="text-xs px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-medium transition-all"
-        >
-          + Add Contact
-        </button>
+      {/* Legend */}
+      <div className="flex items-center gap-3 mt-4 flex-wrap">
+        {STATUS_OPTIONS.map(s => (
+          <div key={s.value} className="flex items-center gap-1.5">
+            <span className={`w-2 h-2 rounded-full ${s.dot}`} />
+            <span className="text-[10px] text-gray-600">{s.label}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Contact list */}
-      {weekItems.length === 0 ? (
-        <div className="text-center py-16 text-gray-700">
-          <svg className="w-10 h-10 mx-auto mb-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <p className="text-sm">No contacts scheduled for this week</p>
-          <p className="text-xs mt-1">Click "+ Add Contact" to add someone</p>
-        </div>
-      ) : (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl px-4 py-1">
-          {weekItems.map((item, idx) => (
-            <ContactItem
-              key={(item.x_handle || item.contact_name) + idx}
-              item={item}
-              onStatusChange={status => updateStatus(idx, status)}
-              onNoteChange={note => updateNote(idx, note)}
-              onRemove={() => removeContact(idx)}
-            />
-          ))}
-        </div>
+      {/* Day detail panel */}
+      {selectedDate && !addingToDate && (
+        <DayPanel
+          dateKey={selectedDate}
+          items={selectedItems}
+          onStatusChange={(idx, status) => updateStatus(selectedDate, idx, status)}
+          onNoteChange={(idx, note) => updateNote(selectedDate, idx, note)}
+          onRemove={idx => removeContact(selectedDate, idx)}
+          onAddClick={() => setAddingToDate(selectedDate)}
+          onClose={() => setSelectedDate(null)}
+        />
       )}
 
-      {/* Status legend */}
-      {weekItems.length > 0 && (
-        <div className="flex items-center gap-3 mt-4 flex-wrap">
-          {STATUS_OPTIONS.map(s => (
-            <span key={s.value} className={`text-[10px] px-2 py-0.5 rounded-full border ${s.color}`}>
-              {s.label}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {showAddSheet && (
+      {/* Add contact sheet */}
+      {addingToDate && (
         <AddContactSheet
           contacts={includedContacts}
-          onAdd={addContact}
-          onClose={() => setShowAddSheet(false)}
+          dateKey={addingToDate}
+          onAdd={contact => addContact(addingToDate, contact)}
+          onClose={() => { setAddingToDate(null) }}
         />
       )}
     </div>
